@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — HireSkill AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <section class="page">
+    <div class="container">
+      <div class="card profile-hero">
+        <div class="profile-avatar" id="profile-avatar">U</div>
+        <div class="profile-hero-copy">
+          <span class="eyebrow">Profile</span>
+          <h1 style="margin-top:6px;" id="profile-name">Loading profile…</h1>
+          <p id="profile-summary">Your learner profile and past interview activity.</p>
+        </div>
+        <div class="profile-badges">
+          <span class="badge">Student learner</span>
+          <span class="badge">Interview ready</span>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div class="card profile-card">
+          <div class="dashboard-head-row">
+            <div>
+              <div class="eyebrow">Personal details</div>
+              <h3 style="margin-top:8px;">About you</h3>
+            </div>
+          </div>
+          <div class="profile-detail-list">
+            <div class="profile-detail-item">
+              <span>Name</span>
+              <strong id="detail-name">—</strong>
+            </div>
+            <div class="profile-detail-item">
+              <span>Email</span>
+              <strong id="detail-email">—</strong>
+            </div>
+            <div class="profile-detail-item">
+              <span>Focus</span>
+              <strong id="detail-focus">Interview confidence</strong>
+            </div>
+            <div class="profile-detail-item">
+              <span>Status</span>
+              <strong id="detail-status">Active learner</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="card profile-card">
+          <div class="dashboard-head-row">
+            <div>
+              <div class="eyebrow">Progress</div>
+              <h3 style="margin-top:8px;">Snapshot</h3>
+            </div>
+          </div>
+          <div id="profile-stats" class="profile-stats-grid"></div>
+        </div>
+      </div>
+
+      <div class="card dashboard-history-card">
+        <div class="dashboard-head-row">
+          <div>
+            <div class="eyebrow">History</div>
+            <h3 style="margin-top:8px;">Interview history</h3>
+          </div>
+          <div class="dashboard-count-pill" id="history-count-pill">Showing 0 entries</div>
+        </div>
+        <div id="profile-history"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/api.js"></script>
+  <script>
+    requireAuth();
+    renderNav('profile');
+
+    const user = getUser();
+    const initialName = user?.name || 'Guest Learner';
+    document.getElementById('profile-name').textContent = initialName;
+    document.getElementById('profile-avatar').textContent = initialName.charAt(0).toUpperCase();
+    document.getElementById('profile-summary').textContent = `Learning with focus and steady improvement — ${initialName.split(' ')[0]} is building interview strength every day.`;
+    document.getElementById('detail-name').textContent = initialName;
+    document.getElementById('detail-email').textContent = user?.email || 'guest@example.com';
+
+    async function load() {
+      const { interviews } = await api('/interview/mine');
+      const completed = interviews
+        .filter((i) => i.status === 'completed')
+        .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+
+      renderStats(completed);
+      renderHistory(completed);
+    }
+
+    function renderStats(completed) {
+      const el = document.getElementById('profile-stats');
+      const totalScore = completed.reduce((sum, item) => sum + (item.report?.finalScore || 0), 0);
+      const avgScore = completed.length ? Math.round(totalScore / completed.length) : 0;
+      const totalQuestions = completed.reduce((sum, item) => sum + (item.questions?.length || 0), 0);
+
+      el.innerHTML = `
+        <div class="profile-stat-card">
+          <div class="stat">${completed.length}</div>
+          <div class="stat-label">completed reports</div>
+        </div>
+        <div class="profile-stat-card">
+          <div class="stat" style="color:${scoreColor(avgScore)}">${avgScore}</div>
+          <div class="stat-label">avg. score</div>
+        </div>
+        <div class="profile-stat-card">
+          <div class="stat">${totalQuestions}</div>
+          <div class="stat-label">questions practiced</div>
+        </div>
+      `;
+    }
+
+    function renderHistory(completed) {
+      const el = document.getElementById('profile-history');
+      const countEl = document.getElementById('history-count-pill');
+      const visible = completed.slice(0, 6);
+      countEl.textContent = `Showing ${visible.length} entr${visible.length === 1 ? 'y' : 'ies'}`;
+
+      if (!visible.length) {
+        el.innerHTML = '<div class="empty-state">No completed interviews yet. Finish a mock interview to build your profile history.</div>';
+        return;
+      }
+
+      el.innerHTML = `
+        <div class="dashboard-history-list">
+          ${visible.map((item) => `
+            <div class="dashboard-history-item">
+              <div class="dashboard-history-top">
+                <div>
+                  <div class="dashboard-history-role">${item.role}</div>
+                  <div class="dashboard-history-meta">${formatDate(item.completedAt)} · ${item.questions.length} questions</div>
+                </div>
+                <div class="dashboard-history-score" style="color:${scoreColor(item.report.finalScore)}">${item.report.finalScore}</div>
+              </div>
+              <div class="dashboard-history-actions">
+                <a href="/report.html?id=${item.id}" class="btn btn-secondary">Open report</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    load();
+  </script>
+</body>
+</html>

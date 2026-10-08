@@ -1,0 +1,11 @@
+{
+  "Web Development": ["javascript", "typescript", "react", "angular", "vue", "node.js", "nodejs", "express", "html", "css", "next.js", "redux", "rest api", "graphql", "webpack", "tailwind"],
+  "Python & Data": ["python", "django", "flask", "fastapi", "pandas", "numpy", "matplotlib", "scikit-learn", "sklearn"],
+  "Java & Backend": ["java", "spring", "spring boot", "hibernate", "j2ee", "microservices"],
+  "AI / Machine Learning": ["machine learning", "deep learning", "tensorflow", "keras", "pytorch", "nlp", "natural language processing", "computer vision", "opencv", "cnn", "rnn", "neural network", "artificial intelligence", "data science", "mediapipe", "deepface"],
+  "Databases": ["mysql", "mongodb", "postgresql", "postgres", "sql", "sqlite", "oracle", "redis", "firebase"],
+  "Cloud & DevOps": ["aws", "azure", "gcp", "docker", "kubernetes", "ci/cd", "jenkins", "git", "github", "linux"],
+  "Mobile": ["android", "kotlin", "swift", "flutter", "react native", "ios"],
+  "Programming Fundamentals": ["c", "c++", "c#", "data structures", "algorithms", "oop", "object oriented programming", "dsa"],
+  "Soft Skills": ["communication", "leadership", "teamwork", "problem solving", "time management", "collaboration", "presentation"]
+}

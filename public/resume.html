@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume — HireSkill AI</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="page">
+  <div class="container" style="max-width:760px;">
+    <span class="eyebrow">Step 1</span>
+    <h1 style="margin-top:6px;">Upload your resume</h1>
+    <p>We'll extract your skills and match you to the most relevant interview track — technical
+      questions for your strongest domain, plus core behavioral questions every candidate gets.</p>
+
+    <div class="card" style="margin-top:24px;">
+      <div id="drop-zone" style="border:2px dashed var(--border); border-radius:var(--radius-sm); padding:40px; text-align:center; cursor:pointer;">
+        <div style="font-size:2rem; margin-bottom:8px;">📄</div>
+        <div id="drop-text">Drag & drop your resume, or click to browse</div>
+        <div class="muted" style="font-size:0.82rem; margin-top:6px;">PDF, DOCX or TXT — up to 10MB</div>
+        <input type="file" id="file-input" accept=".pdf,.docx,.txt" style="display:none;">
+      </div>
+      <div class="form-error" id="upload-error"></div>
+      <button class="btn btn-primary btn-block" id="upload-btn" style="margin-top:20px;" disabled>Analyze resume</button>
+    </div>
+
+    <div class="card" id="result-card" style="margin-top:24px; display:none;">
+      <div class="flex-between">
+        <div>
+          <h3 style="margin-bottom:2px;" id="result-name"></h3>
+          <span class="muted" id="result-email"></span>
+        </div>
+        <span class="badge" id="result-role"></span>
+      </div>
+      <div id="result-skills" style="margin-top:18px;"></div>
+
+      <div class="question-count-card" style="margin-top:18px;">
+        <label for="question-count" style="display:block; margin-bottom:8px;">Question count</label>
+        <div class="question-count-field">
+          <span class="question-count-icon">#</span>
+          <input id="question-count" class="question-count-input" type="number" min="1" max="10" value="5">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="start-interview-btn" style="margin-top:24px;">
+        Start mock interview →
+      </button>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="flex-between">
+        <h3 style="margin:0;">Skip resume, choose a track manually</h3>
+      </div>
+      <p style="margin-top:6px;">Prefer to jump straight in? Type your focus area and start practicing.</p>
+
+      <label for="manual-role" style="display:block; margin-top:14px; margin-bottom:8px;">Topic</label>
+      <input id="manual-role" type="text" placeholder="Type a topic like Java & Backend or Python & Data" value="General">
+
+      <div id="topic-chip-row" class="topic-chip-row" style="margin-top:14px;">
+        <button type="button" class="topic-chip" data-topic="General">General</button>
+        <button type="button" class="topic-chip" data-topic="Web Development">Web Development</button>
+        <button type="button" class="topic-chip" data-topic="Python & Data">Python & Data</button>
+        <button type="button" class="topic-chip" data-topic="Java & Backend">Java & Backend</button>
+        <button type="button" class="topic-chip" data-topic="AI / Machine Learning">AI / Machine Learning</button>
+        <button type="button" class="topic-chip" data-topic="Databases">Databases</button>
+        <button type="button" class="topic-chip" data-topic="Cloud & DevOps">Cloud & DevOps</button>
+        <button type="button" class="topic-chip" data-topic="Mobile">Mobile</button>
+      </div>
+
+      <div class="question-count-card" style="margin-top:14px;">
+        <label for="manual-question-count" style="display:block; margin-bottom:8px;">Question count</label>
+        <div class="question-count-field">
+          <span class="question-count-icon">#</span>
+          <input id="manual-question-count" class="question-count-input" type="number" min="1" max="10" value="5">
+        </div>
+      </div>
+      <button class="btn btn-secondary btn-block" id="manual-start-btn" style="margin-top:14px;">Start without resume</button>
+    </div>
+  </div>
+</section>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  renderNav('resume');
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const uploadBtn = document.getElementById('upload-btn');
+  const errEl = document.getElementById('upload-error');
+  let selectedFile = null;
+  let uploadedResume = null;
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border)'; });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--border)';
+    if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) selectFile(fileInput.files[0]);
+  });
+
+  function selectFile(file) {
+    selectedFile = file;
+    document.getElementById('drop-text').textContent = `Selected: ${file.name}`;
+    uploadBtn.disabled = false;
+  }
+
+  uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    errEl.classList.remove('show');
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Analyzing...';
+    try {
+      const formData = new FormData();
+      formData.append('resume', selectedFile);
+      const data = await apiUpload('/resume/upload', formData);
+      uploadedResume = data.resume;
+      showResult(uploadedResume);
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.classList.add('show');
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = 'Analyze resume';
+    }
+  });
+
+  function showResult(resume) {
+    document.getElementById('result-card').style.display = 'block';
+    document.getElementById('result-name').textContent = resume.name || 'Candidate';
+    document.getElementById('result-email').textContent = resume.email || '';
+    document.getElementById('result-role').textContent = `Suggested track: ${resume.suggestedRole}`;
+
+    const skillsEl = document.getElementById('result-skills');
+    const categories = Object.entries(resume.skills || {});
+    if (categories.length === 0) {
+      skillsEl.innerHTML = `<p class="muted">No specific technical skills detected — we'll use a general interview track.</p>`;
+    } else {
+      skillsEl.innerHTML = categories.map(([cat, skills]) => `
+        <div style="margin-bottom:10px;">
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">${cat}</div>
+          <div class="flex gap-8" style="flex-wrap:wrap;">
+            ${skills.map((s) => `<span class="badge">${s}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.getElementById('start-interview-btn').addEventListener('click', async () => {
+    if (!uploadedResume) return;
+    const questionCount = Number(document.getElementById('question-count').value);
+    const { interview } = await api('/interview/start', {
+      method: 'POST',
+      body: { resumeId: uploadedResume.id, questionCount },
+    });
+    window.location.href = `/interview.html?id=${interview.id}`;
+  });
+
+  document.querySelectorAll('.topic-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      document.getElementById('manual-role').value = chip.dataset.topic;
+    });
+  });
+
+  document.getElementById('manual-start-btn').addEventListener('click', async () => {
+    const role = (document.getElementById('manual-role').value || '').trim() || 'General';
+    const questionCount = Number(document.getElementById('manual-question-count').value);
+    const { interview } = await api('/interview/start', {
+      method: 'POST',
+      body: { role, questionCount },
+    });
+    window.location.href = `/interview.html?id=${interview.id}`;
+  });
+</script>
+</body>
+</html>

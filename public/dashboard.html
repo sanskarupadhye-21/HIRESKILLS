@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — HireSkill AI</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="page">
+  <div class="container">
+    <div class="dashboard-hero">
+      <div class="dashboard-hero-copy">
+        <span class="eyebrow">Student dashboard</span>
+        <h1 style="margin-top:6px;">Welcome back<span id="welcome-name"></span></h1>
+        <p>Stay on top of your interview readiness with focused practice, smarter feedback, and a clear weekly plan.</p>
+        <div class="dashboard-hero-metrics">
+          <div class="metric-pill">
+            <strong id="hero-readiness">0%</strong>
+            <span>readiness</span>
+          </div>
+          <div class="metric-pill">
+            <strong id="hero-questions">0</strong>
+            <span>questions practiced</span>
+          </div>
+          <div class="metric-pill">
+            <strong id="hero-reports">0</strong>
+            <span>reports saved</span>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-hero-actions">
+        <a href="/resume.html" class="btn btn-primary">Start a new interview</a>
+        <a href="/report.html" class="btn btn-secondary">View latest report</a>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-main">
+        <div class="card dashboard-highlight-card">
+          <div class="eyebrow">Performance snapshot</div>
+          <h3>Your progress is building momentum</h3>
+          <p>Use the insights below to sharpen your interview delivery and stay consistent.</p>
+          <div class="grid-3" id="stat-cards" style="margin-top:18px;"></div>
+        </div>
+
+        <div class="dashboard-feature-grid">
+          <div class="card feature-card">
+            <div class="eyebrow">Interview prep</div>
+            <h4>Practice with confidence</h4>
+            <p>Rehearse common student interview questions and improve your clarity, structure, and delivery.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="eyebrow">Smart feedback</div>
+            <h4>Know what to improve</h4>
+            <p>Get actionable hints on pacing, body language, and answer framing to stand out in interviews.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="eyebrow">Career readiness</div>
+            <h4>Build real-world confidence</h4>
+            <p>Turn every mock interview into a stronger, more professional response that feels natural.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="dashboard-side">
+        <div class="card insight-card">
+          <div class="eyebrow">Weekly focus</div>
+          <h3 id="focus-title">Sharpen your executive presence</h3>
+          <p id="focus-copy">Use your latest reports to target clarity, pacing, and confidence.</p>
+          <div class="insight-progress">
+            <div class="insight-progress-bar"><span id="focus-bar"></span></div>
+            <div class="insight-progress-meta" id="focus-meta">0% of your recent answers show strong structure and confidence.</div>
+          </div>
+        </div>
+
+        <div class="card insight-card quote-card">
+          <div class="eyebrow">Motivation</div>
+          <blockquote>“The strongest candidates are not always the loudest — they are the clearest, calmest, and most prepared.”</blockquote>
+          <div class="quote-author">— HireSkill AI coaching insight</div>
+        </div>
+
+        <div class="card insight-card">
+          <div class="eyebrow">Next best actions</div>
+          <ul class="dashboard-checklist">
+            <li>Review your latest report</li>
+            <li>Practice one STAR-style answer</li>
+            <li>Rehearse your opening statement</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  renderNav('dashboard');
+  const user = getUser();
+  document.getElementById('welcome-name').textContent = user ? `, ${user.name.split(' ')[0]}` : '';
+
+  async function load() {
+    const { interviews } = await api('/interview/mine');
+    const completed = interviews
+      .filter((i) => i.status === 'completed')
+      .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+
+    renderStats(completed);
+  }
+
+  function renderStats(completed) {
+    const el = document.getElementById('stat-cards');
+    const totalQuestions = completed.reduce((sum, interview) => sum + (interview.questions?.length || 0), 0);
+    const readiness = Math.min(100, Math.round((completed.length ? 70 + completed.length * 2 : 60)));
+
+    document.getElementById('hero-readiness').textContent = `${readiness}%`;
+    document.getElementById('hero-questions').textContent = totalQuestions;
+    document.getElementById('hero-reports').textContent = completed.length;
+
+    const focusTitle = readiness >= 80 ? 'You are in strong shape' : readiness >= 60 ? 'Focus on delivery and structure' : 'Build confidence with a simple weekly plan';
+    const focusCopy = readiness >= 80
+      ? 'Your recent answers are landing well. Keep refining your depth and executive presence.'
+      : readiness >= 60
+        ? 'Your responses are solid, but pacing and framing can push you into the top tier.'
+        : 'Start with sharper, clearer answers and practice your introduction until it feels effortless.';
+    const focusMeta = readiness >= 80
+      ? '80%+ of your recent answers show clear structure and confidence.'
+      : readiness >= 60
+        ? 'Your recent answers are close to polished, but a few refinements will make them stronger.'
+        : 'A consistent routine will quickly improve your confidence and clarity.';
+
+    document.getElementById('focus-title').textContent = focusTitle;
+    document.getElementById('focus-copy').textContent = focusCopy;
+    document.getElementById('focus-meta').textContent = focusMeta;
+    document.getElementById('focus-bar').style.width = `${Math.min(100, readiness)}%`;
+
+    el.innerHTML = '';
+  }
+
+  load();
+</script>
+</body>
+</html>

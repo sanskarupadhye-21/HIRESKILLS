@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HireSkill AI — AI Interview Practice Platform</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="page">
+  <div class="container" style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:56px; align-items:center;">
+    <div>
+      <span class="eyebrow">AI Interview Practice Platform</span>
+      <h1 style="font-size:2.6rem; line-height:1.1; margin-top:10px;">Practice like a top student.<br>Perform like a professional.</h1>
+      <p style="font-size:1.05rem; max-width:520px;">
+        Upload your resume, get role-matched questions, and rehearse in a live mock interview
+        that reads your speech <em>and</em> your face — then walk away with a polished scorecard,
+        not a guess.
+      </p>
+      <div class="flex gap-16" style="margin-top:28px; flex-wrap:wrap;">
+        <div class="card card-tight" style="flex:1; min-width:150px;">
+          <div class="stat" style="font-size:1.6rem;">Resume</div>
+          <div class="stat-label">→ skills & role detection</div>
+        </div>
+        <div class="card card-tight" style="flex:1; min-width:150px;">
+          <div class="stat" style="font-size:1.6rem;">Live AI</div>
+          <div class="stat-label">→ speech + facial signal</div>
+        </div>
+        <div class="card card-tight" style="flex:1; min-width:150px;">
+          <div class="stat" style="font-size:1.6rem;">Report</div>
+          <div class="stat-label">→ scorecard & feedback</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="width:100%; max-width:420px; justify-self:end;">
+      <div class="flex gap-8" style="margin-bottom:20px;">
+        <button class="btn btn-primary" id="tab-login" style="flex:1;">Log in</button>
+        <button class="btn btn-secondary" id="tab-register" style="flex:1;">Sign up</button>
+      </div>
+
+      <form id="login-form">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" placeholder="you@college.edu" required>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:22px;">Log in</button>
+        <div class="form-error" id="login-error"></div>
+      </form>
+
+      <form id="register-form" style="display:none;">
+        <label for="reg-name">Full name</label>
+        <input type="text" id="reg-name" placeholder="Shreyas Patil" required>
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" placeholder="you@college.edu" required>
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" placeholder="At least 6 characters" required>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:22px;">Create account</button>
+        <div class="form-error" id="register-error"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="/js/api.js"></script>
+<script>
+  renderNav();
+  if (getToken()) window.location.href = '/dashboard.html';
+
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+
+  tabLogin.addEventListener('click', () => {
+    tabLogin.className = 'btn btn-primary'; tabRegister.className = 'btn btn-secondary';
+    loginForm.style.display = 'block'; registerForm.style.display = 'none';
+  });
+  tabRegister.addEventListener('click', () => {
+    tabRegister.className = 'btn btn-primary'; tabLogin.className = 'btn btn-secondary';
+    registerForm.style.display = 'block'; loginForm.style.display = 'none';
+  });
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('login-error');
+    errEl.classList.remove('show');
+    try {
+      const data = await api('/auth/login', {
+        method: 'POST', auth: false,
+        body: {
+          email: document.getElementById('login-email').value,
+          password: document.getElementById('login-password').value,
+        }
+      });
+      setSession(data.token, data.user);
+      window.location.href = '/dashboard.html';
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.classList.add('show');
+    }
+  });
+
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('register-error');
+    errEl.classList.remove('show');
+    try {
+      const data = await api('/auth/register', {
+        method: 'POST', auth: false,
+        body: {
+          name: document.getElementById('reg-name').value,
+          email: document.getElementById('reg-email').value,
+          password: document.getElementById('reg-password').value,
+        }
+      });
+      setSession(data.token, data.user);
+      window.location.href = '/resume.html';
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.classList.add('show');
+    }
+  });
+</script>
+</body>
+</html>

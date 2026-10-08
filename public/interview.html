@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Interview — HireSkill AI</title>
+<link rel="stylesheet" href="/css/style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="page">
+  <div class="container">
+
+    <div id="setup-view">
+      <span class="eyebrow">Live Interview Session</span>
+      <h1 style="margin-top:6px;">Get ready</h1>
+      <p>HireSkill AI will use your webcam and microphone to read facial signals and speech —
+        nothing leaves your machine except the transcript and computed scores. Grant access to begin.</p>
+      <div class="card" style="margin-top:20px; max-width:520px;">
+        <button class="btn btn-primary btn-block" id="grant-access-btn">Enable camera & microphone</button>
+        <div class="form-error" id="setup-error"></div>
+        <div id="model-status" class="muted" style="margin-top:14px; font-size:0.85rem;"></div>
+      </div>
+    </div>
+
+    <div id="interview-view" style="display:none;">
+      <div class="flex-between" style="margin-bottom:18px;">
+        <div>
+          <span class="eyebrow" id="role-label"></span>
+          <h2 style="margin-top:4px;" id="progress-label">Question 1 of 5</h2>
+        </div>
+        <div class="badge" id="timer-badge">00:00</div>
+      </div>
+
+      <div class="grid-2 interview-grid" style="align-items:stretch;">
+        <div class="card interview-panel-card">
+          <div style="position:relative; border-radius:var(--radius-sm); overflow:hidden; background:#000; aspect-ratio:4/3;">
+            <video id="webcam" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+            <div id="camera-placeholder" style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; padding:24px; text-align:center; color:var(--text-muted);">Camera unavailable. Facial analysis is disabled for this session.</div>
+            <canvas id="overlay" style="position:absolute; inset:0;"></canvas>
+            <div style="position:absolute; top:10px; left:10px;" class="badge" id="face-status">Detecting…</div>
+          </div>
+          <div class="flex gap-16" style="margin-top:14px;">
+            <div style="flex:1;">
+              <div class="stat-label">Confidence signal</div>
+              <div class="stat" id="live-confidence" style="font-size:1.3rem;">—</div>
+            </div>
+            <div style="flex:1;">
+              <div class="stat-label">Dominant expression</div>
+              <div class="stat" id="live-emotion" style="font-size:1.3rem;">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Question</div>
+          <h3 id="question-text" style="margin-top:8px; font-size:1.3rem;"></h3>
+          <div id="sample-answer-card" style="display:none; margin-top:12px; padding:12px; border:1px solid rgba(255,255,255,.12); border-radius:12px; background:rgba(45,212,191,0.08);">
+            <div class="stat-label">Suggested answer guide</div>
+            <div id="sample-answer-text" style="margin-top:6px; line-height:1.5; color:var(--text-muted);"></div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="flex-between">
+              <label style="margin:0;">Voice answer capture</label>
+              <span class="badge" id="mic-status">Mic off</span>
+            </div>
+
+            <div id="voice-output" role="textbox" aria-label="Interview answer" aria-readonly="true" style="margin-top:8px; min-height:150px; border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px; background:#0f172a; line-height:1.5; white-space:pre-wrap; user-select:none;">
+              Your spoken answer will appear here as the assistant listens.
+            </div>
+
+            <div class="grid-2" style="margin-top:12px; gap:10px;">
+              <div class="card" style="padding:12px;">
+                <div class="stat-label">Best suggestion</div>
+                <div class="stat" id="best-suggestion" style="font-size:0.95rem; line-height:1.4;">Speak clearly and include at least one concrete example.</div>
+              </div>
+              <div class="card" style="padding:12px;">
+                <div class="stat-label">Confidence level</div>
+                <div class="stat" id="confidence-value" style="font-size:1.1rem;">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-12" style="margin-top:18px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="record-btn" style="flex:1; min-width:160px;">Start answer</button>
+            <button class="btn btn-secondary" id="repeat-btn" style="flex:1; min-width:160px;">Repeat question</button>
+            <button class="btn btn-secondary" id="next-btn" style="flex:1; min-width:160px;" disabled>Next question →</button>
+            <button class="btn btn-danger" id="quit-btn" style="flex:1; min-width:160px;">Stop & go to result</button>
+            <button class="btn btn-danger" id="leave-btn" style="flex:1; min-width:160px;">Leave interview</button>
+          </div>
+          <div class="form-error" id="quit-error"></div>
+          <p class="muted" style="font-size:0.8rem; margin-top:10px;">
+            Tip: aim for 40–90 seconds per answer. Voice input is the only answer method for this interview.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="submitting-view" style="display:none; text-align:center; padding:80px 0;">
+      <h2>Scoring your interview…</h2>
+      <p>Combining speech clarity, technical content, and facial confidence signals.</p>
+    </div>
+
+  </div>
+</section>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  renderNav('interview');
+
+  const params = new URLSearchParams(window.location.search);
+  const interviewId = params.get('id');
+  if (!interviewId) window.location.href = '/resume.html';
+
+  let interview = null;
+  let currentIndex = 0;
+  const answers = [];
+  const emotionSamples = [];
+  let stream = null;
+  let recognition = null;
+  let recognizing = false;
+  let answerStartTime = null;
+  let questionStartTime = null;
+  let sessionStartTime = null;
+  let timerInterval = null;
+  let detectionInterval = null;
+  let modelsReady = false;
+  let finalTranscriptSoFar = '';
+  let currentLiveTranscript = '';
+  let isFinishing = false;
+
+  const video = document.getElementById('webcam');
+  const overlay = document.getElementById('overlay');
+
+  async function init() {
+    const data = await api(`/interview/${interviewId}`);
+    interview = data.interview;
+    document.getElementById('role-label').textContent = `Track: ${interview.role}`;
+  }
+
+  document.getElementById('grant-access-btn').addEventListener('click', async () => {
+    const errEl = document.getElementById('setup-error');
+    errEl.classList.remove('show');
+
+    const unavailable = [];
+    stream = new MediaStream();
+
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Media capture is not supported in this browser.');
+      }
+
+      const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      videoStream.getVideoTracks().forEach((track) => stream.addTrack(track));
+      video.srcObject = stream;
+      await video.play();
+    } catch (err) {
+      unavailable.push('camera');
+    }
+
+    try {
+      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStream.getAudioTracks().forEach((track) => stream.addTrack(track));
+    } catch (err) {
+      unavailable.push('microphone');
+    }
+
+    if (stream.getTracks().length === 0) {
+      document.getElementById('model-status').textContent = 'No camera or microphone detected. Continuing in transcript-only mode.';
+      document.getElementById('camera-placeholder').style.display = 'flex';
+    } else if (unavailable.length) {
+      document.getElementById('model-status').textContent = `${unavailable.join(' and ')} unavailable. You can continue with the available device or use the transcript fallback.`;
+    }
+
+    try {
+      document.getElementById('model-status').textContent = 'Loading face detection models…';
+      if (stream.getVideoTracks().length) {
+        await loadFaceModels();
+      } else {
+        document.getElementById('camera-placeholder').style.display = 'flex';
+      }
+      document.getElementById('model-status').textContent = 'Ready.';
+      startInterviewFlow();
+    } catch (err) {
+      errEl.textContent = 'The live session could not start: ' + err.message;
+      errEl.classList.add('show');
+    }
+  });
+
+  async function loadFaceModels() {
+    try {
+      const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+      modelsReady = true;
+    } catch (e) {
+      console.warn('Face model load failed, continuing without facial analysis.', e);
+      modelsReady = false;
+    }
+  }
+
+  function startInterviewFlow() {
+    document.getElementById('setup-view').style.display = 'none';
+    document.getElementById('interview-view').style.display = 'block';
+    sessionStartTime = Date.now();
+    showQuestion(0);
+    startTimer();
+    if (modelsReady) {
+      if (video.readyState >= 2) {
+        startDetectionLoop();
+      } else {
+        video.onloadedmetadata = () => startDetectionLoop();
+      }
+    }
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      const secs = Math.floor((Date.now() - sessionStartTime) / 1000);
+      const mm = String(Math.floor(secs / 60)).padStart(2, '0');
+      const ss = String(secs % 60).padStart(2, '0');
+      document.getElementById('timer-badge').textContent = `${mm}:${ss}`;
+    }, 1000);
+  }
+
+  function startDetectionLoop() {
+    detectionInterval = setInterval(async () => {
+      if (!video.videoWidth) return;
+      const detection = await faceapi
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 }))
+        .withFaceExpressions();
+
+      const canvasCtx = overlay.getContext('2d');
+      overlay.width = video.clientWidth;
+      overlay.height = video.clientHeight;
+      canvasCtx.clearRect(0, 0, overlay.width, overlay.height);
+
+      if (detection) {
+        const scaled = faceapi.resizeResults(detection, { width: overlay.width, height: overlay.height });
+        faceapi.draw.drawDetections(overlay, scaled);
+
+        const exp = detection.expressions;
+        emotionSamples.push({
+          faceDetected: true,
+          happy: exp.happy, neutral: exp.neutral, sad: exp.sad,
+          angry: exp.angry, fearful: exp.fearful, disgusted: exp.disgusted, surprised: exp.surprised,
+        });
+
+        const dominant = Object.entries(exp).sort((a, b) => b[1] - a[1])[0];
+        document.getElementById('live-emotion').textContent = dominant[0];
+        const confidence = Math.round(Math.max(0, Math.min(100, (exp.happy + exp.neutral * 0.6 - exp.fearful - exp.sad) * 65 + 45)));
+        document.getElementById('live-confidence').textContent = confidence;
+        document.getElementById('face-status').textContent = 'Face detected';
+      } else {
+        emotionSamples.push({ faceDetected: false });
+        document.getElementById('face-status').textContent = 'No face detected';
+        document.getElementById('live-emotion').textContent = '—';
+      }
+    }, 800);
+  }
+
+  function showQuestion(idx) {
+    currentIndex = idx;
+    const q = interview.questions[idx];
+    document.getElementById('progress-label').textContent = `Question ${idx + 1} of ${interview.questions.length}`;
+    document.getElementById('question-text').textContent = q.text;
+    const sampleAnswerCard = document.getElementById('sample-answer-card');
+    const sampleAnswerText = document.getElementById('sample-answer-text');
+    if (q.sampleAnswer) {
+      sampleAnswerText.textContent = q.sampleAnswer;
+      sampleAnswerCard.style.display = 'block';
+    } else {
+      sampleAnswerCard.style.display = 'none';
+      sampleAnswerText.textContent = '';
+    }
+    finalTranscriptSoFar = '';
+    currentLiveTranscript = '';
+    document.getElementById('voice-output').textContent = 'Your spoken answer will appear here as the assistant listens.';
+    document.getElementById('best-suggestion').textContent = 'Speak clearly and include at least one concrete example.';
+    document.getElementById('confidence-value').textContent = '0%';
+    document.getElementById('next-btn').disabled = true;
+    document.getElementById('record-btn').disabled = true;
+    document.getElementById('record-btn').textContent = 'Start answer';
+    document.getElementById('mic-status').textContent = 'Assistant speaking…';
+    questionStartTime = null;
+    speakQuestion(q.text);
+  }
+
+  function speakQuestion(text) {
+    if (!('speechSynthesis' in window)) {
+      document.getElementById('mic-status').textContent = 'Speech playback unavailable';
+      document.getElementById('record-btn').disabled = false;
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    utterance.onstart = () => {
+      document.getElementById('mic-status').textContent = 'Assistant speaking…';
+      document.getElementById('record-btn').disabled = true;
+    };
+
+    utterance.onend = () => {
+      document.getElementById('mic-status').textContent = 'Mic ready';
+      document.getElementById('record-btn').disabled = false;
+    };
+
+    utterance.onerror = () => {
+      document.getElementById('mic-status').textContent = 'Speech playback unavailable';
+      document.getElementById('record-btn').disabled = false;
+    };
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function getTranscriptMetrics(transcript, question) {
+    const clean = (transcript || '').trim();
+    const words = clean ? clean.split(/\s+/).filter(Boolean).length : 0;
+    const keywordHits = (question?.keywords || []).filter((keyword) => clean.toLowerCase().includes(keyword.toLowerCase()));
+    const coverage = (question?.keywords || []).length ? keywordHits.length / question.keywords.length : 0;
+
+    const fillerWords = ['um', 'uh', 'like', 'you know', 'basically', 'actually', 'i mean'];
+    let fillerCount = 0;
+    const lowerText = clean.toLowerCase();
+    fillerWords.forEach((filler) => {
+      const reg = new RegExp(`\\b${filler}\\b`, 'g');
+      const matches = lowerText.match(reg);
+      if (matches) fillerCount += matches.length;
+    });
+
+    const clarityValue = Math.max(0, Math.min(100, Math.round(
+      Math.min(words, 80) / 80 * 45 +
+      coverage * 40 +
+      Math.max(0, 15 - fillerCount * 3)
+    )));
+
+    const confidence = Math.max(0, Math.min(100, Math.round(
+      coverage * 45 +
+      Math.min(words, 60) / 60 * 35 +
+      Math.max(0, 20 - fillerCount * 4)
+    )));
+
+    const estimatedScore = Math.max(0, Math.min(100, Math.round(
+      coverage * 55 +
+      clarityValue * 0.3 +
+      Math.min(words, 60) / 60 * 20
+    )));
+
+    let suggestion = 'Speak clearly and include at least one concrete example.';
+    if (coverage < 0.3) {
+      suggestion = `Try to mention the key terms: ${question?.keywords?.slice(0, 3).join(', ')}.`;
+    } else if (words < 25) {
+      suggestion = 'Add a short real-world example and more detail to strengthen your answer.';
+    } else if (fillerCount > 2) {
+      suggestion = 'Slow down slightly and reduce filler words to improve clarity.';
+    } else {
+      suggestion = 'Nice flow — keep going with one practical example to close the answer.';
+    }
+
+    return { words, coverage, confidence, estimatedScore, clarityValue, suggestion };
+  }
+
+  function updateLiveMetrics(transcript) {
+    const q = interview.questions[currentIndex];
+    const metrics = getTranscriptMetrics(transcript, q);
+    document.getElementById('best-suggestion').textContent = metrics.suggestion;
+    document.getElementById('confidence-value').textContent = `${metrics.confidence}%`;
+  }
+
+  function getSpeechRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return null;
+    const r = new SR();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = 'en-US';
+    return r;
+  }
+
+  document.getElementById('record-btn').addEventListener('click', () => {
+    if (!recognizing) {
+      startAnswering();
+    } else {
+      stopAnswering();
+    }
+  });
+
+  function startAnswering() {
+    answerStartTime = Date.now();
+    questionStartTime = questionStartTime || Date.now();
+    recognition = getSpeechRecognition();
+    document.getElementById('mic-status').textContent = 'Listening…';
+    document.getElementById('record-btn').textContent = 'Stop & save answer';
+    document.getElementById('voice-output').textContent = 'Listening for your answer…';
+
+    if (recognition) {
+      recognition.onresult = (event) => {
+        let interim = '';
+        let finalChunk = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcriptPiece = event.results[i][0].transcript;
+          if (event.results[i].isFinal) finalChunk += transcriptPiece + ' ';
+          else interim += transcriptPiece;
+        }
+        if (finalChunk) finalTranscriptSoFar += finalChunk;
+        currentLiveTranscript = (finalTranscriptSoFar + ' ' + interim).trim();
+        document.getElementById('voice-output').textContent = currentLiveTranscript || 'Listening for your answer…';
+        updateLiveMetrics(currentLiveTranscript);
+      };
+      recognition.onerror = (e) => console.warn('Speech recognition error', e.error);
+      recognition.start();
+    } else {
+      document.getElementById('mic-status').textContent = 'Microphone unavailable';
+      document.getElementById('voice-output').textContent = 'Speech recognition is unavailable in this browser. Please use a browser with microphone support.';
+    }
+    recognizing = true;
+  }
+
+  function stopAnswering() {
+    if (recognition) recognition.stop();
+    recognizing = false;
+    document.getElementById('mic-status').textContent = 'Saved';
+    document.getElementById('record-btn').textContent = 'Re-record answer';
+    document.getElementById('next-btn').disabled = false;
+    updateLiveMetrics(currentLiveTranscript);
+  }
+
+  document.getElementById('repeat-btn').addEventListener('click', () => {
+    const q = interview.questions[currentIndex];
+    if (recognizing) stopAnswering();
+    speakQuestion(q.text);
+  });
+
+  document.getElementById('next-btn').addEventListener('click', () => {
+    const q = interview.questions[currentIndex];
+    const durationSec = answerStartTime ? Math.max(1, Math.round((Date.now() - answerStartTime) / 1000)) : 30;
+    answers.push({
+      questionId: q.id,
+      transcript: currentLiveTranscript,
+      durationSec,
+    });
+
+    if (currentIndex + 1 < interview.questions.length) {
+      showQuestion(currentIndex + 1);
+    } else {
+      finishInterview();
+    }
+  });
+
+  document.getElementById('quit-btn').addEventListener('click', () => {
+    const quitError = document.getElementById('quit-error');
+    quitError.classList.remove('show');
+    quitError.textContent = '';
+
+    const hasAnsweredQuestion = answers.some((answer) => answer.transcript && answer.transcript.trim().length > 0)
+      || (currentLiveTranscript && currentLiveTranscript.trim().length > 0);
+
+    if (!hasAnsweredQuestion) {
+      quitError.textContent = 'Please answer at least one question before stopping the interview.';
+      quitError.classList.add('show');
+      return;
+    }
+
+    if (recognizing) stopAnswering();
+
+    const q = interview.questions[currentIndex];
+    const durationSec = answerStartTime ? Math.max(1, Math.round((Date.now() - answerStartTime) / 1000)) : 30;
+    const alreadySaved = answers.some((answer) => answer.questionId === q.id);
+
+    if (!alreadySaved) {
+      answers.push({
+        questionId: q.id,
+        transcript: currentLiveTranscript,
+        durationSec,
+      });
+    }
+
+    finishInterview();
+  });
+
+  document.getElementById('leave-btn').addEventListener('click', () => {
+    if (recognizing) stopAnswering();
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+    window.location.href = '/resume.html';
+  });
+
+  async function finishInterview() {
+    if (isFinishing) return;
+    isFinishing = true;
+
+    clearInterval(timerInterval);
+    clearInterval(detectionInterval);
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+
+    document.getElementById('interview-view').style.display = 'none';
+    document.getElementById('submitting-view').style.display = 'block';
+
+    const totalDurationSec = Math.round((Date.now() - sessionStartTime) / 1000);
+    const { interview: completed } = await api(`/interview/${interviewId}/submit`, {
+      method: 'POST',
+      body: { answers, emotionSamples, totalDurationSec },
+    });
+    window.location.href = `/report.html?id=${completed.id}`;
+  }
+
+  init();
+</script>
+</body>
+</html>

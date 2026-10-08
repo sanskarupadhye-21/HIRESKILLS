@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Report — HireSkill AI</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="nav-root"></div>
+
+<section class="page">
+  <div class="container" id="report-root">
+    <div class="empty-state">Loading report…</div>
+  </div>
+</section>
+
+<script src="/js/api.js"></script>
+<script>
+  requireAuth();
+  renderNav('report');
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  async function load() {
+    try {
+      if (!id) {
+        const { interviews } = await api('/interview/mine');
+        renderReportList(interviews.filter((interview) => interview.status === 'completed'));
+        return;
+      }
+
+      const { interview } = await api(`/interview/${id}`);
+      if (!interview.report) {
+        throw new Error('This interview does not have a completed report yet.');
+      }
+      render(interview);
+    } catch (error) {
+      document.getElementById('report-root').innerHTML = `<div class="empty-state">${error.message}</div>`;
+    }
+  }
+
+  function renderReportList(interviews) {
+    const root = document.getElementById('report-root');
+    if (!interviews.length) {
+      root.innerHTML = '<div class="empty-state">No completed reports yet. Finish a mock interview to see your results here.</div>';
+      return;
+    }
+
+    root.innerHTML = `
+      <div class="report-hero">
+        <div>
+          <span class="eyebrow">Performance history</span>
+          <h1 style="margin-top:6px;">Your reports</h1>
+          <p>Review completed interview scorecards and answer feedback.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        ${interviews.map((interview) => `
+          <div class="card">
+            <span class="eyebrow">${interview.role} track</span>
+            <h3 style="margin-top:8px;">${formatDate(interview.completedAt)}</h3>
+            <p>${interview.questions.length} questions · Overall score: ${Math.round(interview.report?.finalScore || 0)}</p>
+            <a href="/report.html?id=${interview.id}" class="btn btn-secondary">Open report</a>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function render(iv) {
+    const r = iv.report;
+    const root = document.getElementById('report-root');
+    root.innerHTML = `
+      <div class="report-hero">
+        <div>
+          <span class="eyebrow">Interview Report</span>
+          <h1 style="margin-top:6px;">${iv.role} Track</h1>
+          <p>${formatDate(iv.completedAt)} · ${iv.questions.length} questions · ${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min' : ''}</p>
+        </div>
+        <div class="report-chip-row">
+          <span class="report-chip">${iv.questions.length} questions</span>
+          <span class="report-chip">${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min' : 'Live session'}</span>
+        </div>
+      </div>
+
+      <div class="card report-overview" style="margin-bottom:24px;">
+        <div class="report-overview-inner">
+          <div class="report-ring-card">
+            ${ringSVG(r.finalScore, 140, 12, 'OVERALL')}
+          </div>
+          <div class="report-score-grid">
+            ${scoreRow('Technical / content', r.technicalScore)}
+            ${scoreRow('Speech clarity', r.speechScore)}
+            ${scoreRow('Facial confidence', r.confidenceScore)}
+            ${scoreRow('Engagement', r.engagementScore)}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:24px;">
+        <div class="card report-list-card">
+          <div class="report-card-title">Strengths</div>
+          <ul class="report-list">
+            ${r.strengths.map((s) => `<li>${s}</li>`).join('') || '<li>—</li>'}
+          </ul>
+        </div>
+        <div class="card report-list-card">
+          <div class="report-card-title">Areas to improve</div>
+          <ul class="report-list">
+            ${r.improvements.map((s) => `<li>${s}</li>`).join('') || '<li>—</li>'}
+          </ul>
+        </div>
+      </div>
+
+      <div class="card report-breakdown-card">
+        <div class="report-card-title">Question-by-question breakdown</div>
+        ${iv.answers.map((a, idx) => {
+          const answerGuide = buildAnswerGuide(a.questionText);
+          return `
+            <div class="report-answer-card">
+              <div class="report-answer-header">
+                <div class="report-answer-q">Q${idx + 1}. ${a.questionText}</div>
+                <span class="badge" style="color:${scoreColor(a.technicalScore)}">${a.technicalScore} content · ${a.clarityScore} clarity</span>
+              </div>
+
+              <div class="report-answer-grid">
+                <div class="report-answer-panel">
+                  <div class="report-panel-label">Your answer</div>
+                  <p class="report-answer-text">${a.transcript ? a.transcript : '<em>No answer recorded.</em>'}</p>
+                  <div class="report-meta">${a.wpm ? a.wpm + ' wpm' : ''} ${a.fillerCount ? '· ' + a.fillerCount + ' filler words' : ''}</div>
+                </div>
+
+                <div class="report-answer-panel report-answer-panel-accent">
+                  <div class="report-panel-label">How to answer this question</div>
+                  <div class="report-panel-subtitle">Perfect answer idea</div>
+                  <p class="report-answer-text">${answerGuide.ideal}</p>
+                  <div class="report-panel-subtitle">Suggestions</div>
+                  <ul class="report-panel-list">
+                    ${answerGuide.tips.map((tip) => `<li>${tip}</li>`).join('')}
+                  </ul>
+                  <div class="report-motivation">${answerGuide.motivation}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div style="text-align:center; margin-top:32px;">
+        <a href="/resume.html" class="btn btn-primary">Practice another interview</a>
+      </div>
+    `;
+  }
+
+  function scoreRow(label, value) {
+    return `
+      <div class="report-tile">
+        <div class="stat-label">${label}</div>
+        <div class="stat report-stat" style="font-size:1.5rem; color:${scoreColor(value)}">${value}</div>
+      </div>
+    `;
+  }
+
+  function buildAnswerGuide(questionText) {
+    const prompt = (questionText || '').trim();
+    const ideal = prompt
+      ? `A strong response to “${prompt}” should begin with a clear point, explain the action you took, and finish with the result or impact. Keep it practical, structured, and specific to the situation.`
+      : 'Start with a clear opening, explain your approach in a few focused points, and end with the outcome you achieved.';
+
+    const tips = [
+      'Open with a short answer that directly addresses the question.',
+      'Mention one concrete example or real experience to support your point.',
+      'End with the outcome, lesson learned, or value you created.',
+    ];
+
+    const motivation = 'You already have the insight — shaping it into a clear, confident answer is what turns a good response into a standout one.';
+
+    return { ideal, tips, motivation };
+  }
+
+  load();
+</script>
+</body>
+</html>

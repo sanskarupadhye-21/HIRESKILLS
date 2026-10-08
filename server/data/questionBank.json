@@ -1,0 +1,114 @@
+{
+  "General": [
+    {
+      "q": "Tell me about yourself and your academic background.",
+      "keywords": ["experience", "project", "skill", "college", "degree", "background", "interest"]
+    },
+    {
+      "q": "Why do you want to work in this role / domain?",
+      "keywords": ["passion", "interest", "skill", "career", "goal", "learn", "growth"]
+    },
+    {
+      "q": "What is your biggest strength and how does it help you professionally?",
+      "keywords": ["strength", "skill", "team", "problem", "communication", "leadership"]
+    },
+    {
+      "q": "Describe a challenging situation you faced and how you resolved it.",
+      "keywords": ["challenge", "problem", "solution", "team", "learned", "resolved", "approach"]
+    },
+    {
+      "q": "Where do you see yourself in the next few years?",
+      "keywords": ["goal", "growth", "career", "learn", "skills", "role", "company"]
+    }
+  ],
+  "Web Development": [
+    {
+      "q": "What is the difference between REST and GraphQL APIs?",
+      "keywords": ["endpoint", "query", "over-fetching", "under-fetching", "resource", "schema", "http"]
+    },
+    {
+      "q": "Explain how the Virtual DOM works in React.",
+      "keywords": ["diff", "reconciliation", "virtual", "dom", "render", "update", "component"]
+    },
+    {
+      "q": "What is the event loop in Node.js?",
+      "keywords": ["asynchronous", "callback", "queue", "non-blocking", "single-threaded", "event"]
+    }
+  ],
+  "Python & Data": [
+    {
+      "q": "What is the difference between a list and a tuple in Python?",
+      "keywords": ["mutable", "immutable", "ordered", "list", "tuple", "performance"]
+    },
+    {
+      "q": "How does Flask differ from Django?",
+      "keywords": ["micro", "framework", "orm", "lightweight", "batteries", "routing"]
+    }
+  ],
+  "Java & Backend": [
+    {
+      "q": "Explain the concept of dependency injection in Spring.",
+      "keywords": ["inversion of control", "bean", "container", "dependency", "coupling", "spring"]
+    },
+    {
+      "q": "What is the difference between an abstract class and an interface in Java?",
+      "keywords": ["abstract", "interface", "multiple inheritance", "implementation", "method"]
+    }
+  ],
+  "AI / Machine Learning": [
+    {
+      "q": "Explain the difference between supervised and unsupervised learning.",
+      "keywords": ["label", "unlabeled", "classification", "clustering", "training", "output"]
+    },
+    {
+      "q": "What is overfitting and how do you prevent it?",
+      "keywords": ["overfitting", "regularization", "dropout", "validation", "generalize", "training data"]
+    },
+    {
+      "q": "How would you evaluate the performance of a facial emotion recognition model?",
+      "keywords": ["accuracy", "precision", "recall", "f1", "confusion matrix", "validation"]
+    }
+  ],
+  "Databases": [
+    {
+      "q": "What is normalization in databases and why is it important?",
+      "keywords": ["redundancy", "normal form", "integrity", "relation", "table", "consistency"]
+    },
+    {
+      "q": "When would you choose MongoDB over MySQL for a project?",
+      "keywords": ["schema", "flexible", "document", "scalability", "relational", "unstructured"]
+    }
+  ],
+  "Cloud & DevOps": [
+    {
+      "q": "What is the difference between a container and a virtual machine?",
+      "keywords": ["container", "virtual machine", "hypervisor", "isolated", "lightweight", "os"]
+    },
+    {
+      "q": "Explain the purpose of a CI/CD pipeline.",
+      "keywords": ["continuous integration", "continuous deployment", "automation", "build", "test", "deploy"]
+    }
+  ],
+  "Mobile": [
+    {
+      "q": "What is the difference between native and cross-platform app development?",
+      "keywords": ["native", "cross-platform", "performance", "flutter", "react native", "code reuse"]
+    }
+  ],
+  "Programming Fundamentals": [
+    {
+      "q": "Explain the time complexity of binary search and when you would use it.",
+      "keywords": ["log n", "sorted", "divide", "complexity", "binary search", "efficient"]
+    },
+    {
+      "q": "What is the difference between an array and a linked list?",
+      "keywords": ["contiguous", "pointer", "insertion", "deletion", "memory", "index"]
+    }
+  ],
+  "Soft Skills": [
+    {
+      "q": "How do you handle disagreements while working in a team?",
+      "keywords": ["listen", "communicate", "compromise", "respect", "discuss", "collaborate"]
+    }
+  ]
+}
