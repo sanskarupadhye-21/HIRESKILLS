@@ -1,158 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile — HireSkill AI</title>
-  <link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Student Profile &amp; Interview Progress | HireSkill AI</title>
+<meta name="description" content="View your HireSkill AI student profile, target technical tracks, past mock interview performance history, and communication telemetry milestones.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://hireskill.ai/profile">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HireSkill AI">
+<meta property="og:url" content="https://hireskill.ai/profile">
+<meta property="og:title" content="Student Profile &amp; Interview Progress | HireSkill AI">
+<meta property="og:description" content="View your HireSkill AI student profile, target technical tracks, and past mock interview performance history.">
+
+<link rel="preload" href="https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 24'%3E%3Crect width='22' height='24' fill='%234a4d44'/%3E%3Cpath fill='%23fff' d='M11 1.3c-2.1 0-3.95 1.2-4.75 2.95C3.95 4.55 2.3 6.25 2.3 8.35c0 2.3 1.9 4.2 4.3 4.2h8.8c2.4 0 4.3-1.9 4.3-4.2 0-2.1-1.65-3.8-4-4.1C14.95 2.5 13.1 1.3 11 1.3Z'/%3E%3Cpath fill='%23fff' d='M9.6 12.55h2.8v4.2c1.35.3 2.45 1.15 3.15 2.4-1.35.4-2.4.15-3.15-.4v4.15H9.6v-4.15c-.75.55-1.8.8-3.15.4.7-1.25 1.8-2.1 3.15-2.4v-4.2Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://hireskill.ai/profile#webpage",
+      "url": "https://hireskill.ai/profile",
+      "name": "Student Profile & Career Readiness",
+      "description": "User profile tracking career preparation progress, target role, and past mock interview evaluations."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://hireskill.ai/profile#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hireskill.ai/" },
+        { "@type": "ListItem", "position": 2, "name": "Profile", "item": "https://hireskill.ai/profile" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  @font-face {
+    font-family: 'Lexend';
+    src: url('https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2') format('woff2');
+    font-weight: 100 900; font-style: normal; font-display: swap;
+  }
+  :root {
+    --ink: #ffffff;
+    --ink-soft: rgba(255,255,255,0.7);
+    --sylva-green: #34d399;
+    --sylva-cyan: #38bdf8;
+    --stage-bg: #21251e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--stage-bg);
+    color: var(--ink);
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg-ambient-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.75;
+  }
+  .ghost-wordmark-3d {
+    position: fixed; top: 38%; left: 50%;
+    transform: translate(-50%, -50%) translateZ(-160px);
+    font-size: clamp(7.5rem, 17vw, 22rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.022);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .sylva-stage-wrapper {
+    position: relative; z-index: 1;
+    max-width: 1140px;
+    margin: 100px auto 70px auto;
+    padding: 0 24px;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+  }
+
+  .sylva-tag {
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--sylva-green); margin-bottom: 8px; display: inline-block;
+  }
+  .sylva-glass-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.015) 55%, rgba(18,23,16,0.52));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 32px;
+    padding: 38px;
+    backdrop-filter: blur(24px) saturate(180%);
+    margin-bottom: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+    transform: perspective(1400px) rotateX(calc(var(--py,0) * -1.2deg)) rotateY(calc(var(--px,0) * 1.5deg));
+    transition: transform .12s cubic-bezier(.16,1,.3,1);
+  }
+
+  .sylva-profile-hero-row {
+    display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+  }
+  .sylva-avatar-circle {
+    width: 82px; height: 82px; border-radius: 50%;
+    background: #eef1e7; color: #1e241b;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; font-weight: 600;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+  }
+  .sylva-info-row {
+    display: flex; justify-content: space-between; padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.94rem;
+  }
+  .sylva-info-row:last-child { border-bottom: none; }
+  .sylva-info-row span { color: rgba(255,255,255,0.6); }
+  .sylva-info-row strong { color: #fff; font-weight: 500; }
+  
+  .sylva-stat-tile {
+    background: rgba(0,0,0,0.24); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 22px; text-align: center;
+    transition: transform .2s, border-color .2s;
+  }
+  .sylva-stat-tile:hover {
+    transform: translateY(-3px);
+    border-color: rgba(52, 211, 153, 0.35);
+  }
+  .sylva-stat-tile .stat-num {
+    font-size: 2.2rem; font-weight: 600; color: var(--sylva-green);
+  }
+  .sylva-stat-tile .stat-label {
+    font-size: 0.8rem; text-transform: uppercase; color: rgba(255,255,255,0.55); letter-spacing: 0.08em; margin-top: 6px;
+  }
+  
+  .sylva-history-item {
+    background: rgba(0,0,0,0.22); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 20px 24px; margin-top: 14px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+    transition: border-color .2s;
+  }
+  .sylva-history-item:hover {
+    border-color: rgba(52, 211, 153, 0.35);
+  }
+  .sylva-btn-sm {
+    padding: 10px 22px; border-radius: 999px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16); color: #fff; text-decoration: none;
+    font-size: 0.88rem; font-weight: 500; transition: all .2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .sylva-btn-sm:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); }
+
+  .sylva-btn {
+    padding: 14px 28px; border-radius: 999px; font-weight: 600;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.92rem; transition: all .2s; border: none; cursor: pointer;
+  }
+  .sylva-btn-primary {
+    background: #eef1e7; color: #1e241b; box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .sylva-btn-primary:hover { background: #fff; transform: translateY(-2px); }
+</style>
 </head>
 <body>
-  <div id="nav-root"></div>
 
-  <section class="page">
-    <div class="container">
-      <div class="card profile-hero">
-        <div class="profile-avatar" id="profile-avatar">U</div>
-        <div class="profile-hero-copy">
-          <span class="eyebrow">Profile</span>
-          <h1 style="margin-top:6px;" id="profile-name">Loading profile…</h1>
-          <p id="profile-summary">Your learner profile and past interview activity.</p>
-        </div>
-        <div class="profile-badges">
-          <span class="badge">Student learner</span>
-          <span class="badge">Interview ready</span>
-        </div>
+<canvas id="ambient-canvas" class="bg-ambient-canvas" aria-hidden="true"></canvas>
+<div class="ghost-wordmark-3d" aria-hidden="true">PORTFOLIO</div>
+<div id="nav-root"></div>
+
+<main class="sylva-stage-wrapper">
+  <!-- Profile Hero Card -->
+  <header class="sylva-glass-card">
+    <div class="sylva-profile-hero-row">
+      <div class="sylva-avatar-circle" id="profile-avatar" aria-hidden="true">U</div>
+      <div style="flex:1;">
+        <span class="sylva-tag">Learner Portfolio</span>
+        <h1 style="font-size:clamp(2rem, 3.8vw, 3rem); font-weight:300; color:#fff; margin:4px 0 8px 0; letter-spacing:-0.02em;" id="profile-name">
+          Student Learner
+        </h1>
+        <p style="color:var(--ink-soft); font-size:1rem; margin:0;" id="profile-summary">
+          Your personalized practice milestones and interview performance profile.
+        </p>
       </div>
-
-      <div class="grid-2" style="margin-bottom:24px;">
-        <div class="card profile-card">
-          <div class="dashboard-head-row">
-            <div>
-              <div class="eyebrow">Personal details</div>
-              <h3 style="margin-top:8px;">About you</h3>
-            </div>
-          </div>
-          <div class="profile-detail-list">
-            <div class="profile-detail-item">
-              <span>Name</span>
-              <strong id="detail-name">—</strong>
-            </div>
-            <div class="profile-detail-item">
-              <span>Email</span>
-              <strong id="detail-email">—</strong>
-            </div>
-            <div class="profile-detail-item">
-              <span>Focus</span>
-              <strong id="detail-focus">Interview confidence</strong>
-            </div>
-            <div class="profile-detail-item">
-              <span>Status</span>
-              <strong id="detail-status">Active learner</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="card profile-card">
-          <div class="dashboard-head-row">
-            <div>
-              <div class="eyebrow">Progress</div>
-              <h3 style="margin-top:8px;">Snapshot</h3>
-            </div>
-          </div>
-          <div id="profile-stats" class="profile-stats-grid"></div>
-        </div>
-      </div>
-
-      <div class="card dashboard-history-card">
-        <div class="dashboard-head-row">
-          <div>
-            <div class="eyebrow">History</div>
-            <h3 style="margin-top:8px;">Interview history</h3>
-          </div>
-          <div class="dashboard-count-pill" id="history-count-pill">Showing 0 entries</div>
-        </div>
-        <div id="profile-history"></div>
+      <div>
+        <span class="sylva-tag" style="background:rgba(52,211,153,0.12); padding:8px 18px; border-radius:999px; border:1px solid rgba(52,211,153,0.25);">
+          Interview Ready
+        </span>
       </div>
     </div>
+  </header>
+
+  <!-- Two Columns: Account Details & Analytics Snapshot -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-bottom:28px;">
+    <section class="sylva-glass-card" aria-labelledby="details-heading">
+      <span class="sylva-tag">Account Specs</span>
+      <h2 id="details-heading" style="font-size:1.5rem; font-weight:400; color:#fff; margin:6px 0 18px 0;">Learner Credentials</h2>
+      <div>
+        <div class="sylva-info-row">
+          <span>Full Name</span>
+          <strong id="detail-name">&mdash;</strong>
+        </div>
+        <div class="sylva-info-row">
+          <span>Registered Email</span>
+          <strong id="detail-email">&mdash;</strong>
+        </div>
+        <div class="sylva-info-row">
+          <span>Primary Focus</span>
+          <strong id="detail-focus">Interview Composure &amp; STAR</strong>
+        </div>
+        <div class="sylva-info-row">
+          <span>Account Tier</span>
+          <strong id="detail-status" style="color:var(--sylva-green);">Active Practice Suite</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="sylva-glass-card" aria-labelledby="stats-heading">
+      <span class="sylva-tag">Telemetry Analytics</span>
+      <h2 id="stats-heading" style="font-size:1.5rem; font-weight:400; color:#fff; margin:6px 0 18px 0;">Milestone Overview</h2>
+      <div id="profile-stats" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;"></div>
+    </section>
+  </div>
+
+  <!-- Activity Log: Completed Interviews -->
+  <section class="sylva-glass-card" aria-labelledby="history-heading">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+      <div>
+        <span class="sylva-tag">Activity Log</span>
+        <h2 id="history-heading" style="font-size:1.6rem; font-weight:400; color:#fff; margin:4px 0 0 0;">Completed Mock Rehearsals</h2>
+      </div>
+      <span class="sylva-tag" id="history-count-pill" style="margin:0; background:rgba(255,255,255,0.06); padding:6px 14px; border-radius:999px;">0 sessions</span>
+    </div>
+    <div id="profile-history"></div>
   </section>
+</main>
 
-  <script src="/js/api.js"></script>
-  <script>
-    requireAuth();
-    renderNav('profile');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/spatial-3d.js"></script>
+<script>
+  requireAuth();
+  renderNav('profile');
 
-    const user = getUser();
-    const initialName = user?.name || 'Guest Learner';
-    document.getElementById('profile-name').textContent = initialName;
-    document.getElementById('profile-avatar').textContent = initialName.charAt(0).toUpperCase();
-    document.getElementById('profile-summary').textContent = `Learning with focus and steady improvement — ${initialName.split(' ')[0]} is building interview strength every day.`;
-    document.getElementById('detail-name').textContent = initialName;
-    document.getElementById('detail-email').textContent = user?.email || 'guest@example.com';
+  // Interactive 3D Ambient Canvas
+  (function() {
+    const cv = document.getElementById('ambient-canvas');
+    if (!window.THREE || !cv) return;
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-    async function load() {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2500);
+    camera.position.z = 1100;
+
+    // Floating icosahedron wireframe
+    const icoGeo = new THREE.IcosahedronGeometry(220, 1);
+    const icoMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 0.14, wireframe: true });
+    const ico = new THREE.Mesh(icoGeo, icoMat);
+    scene.add(ico);
+
+    // Particle constellation
+    const geo = new THREE.BufferGeometry();
+    const count = 500;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      pos[i] = (Math.random() - 0.5) * 2200;
+      pos[i+1] = (Math.random() - 0.5) * 1400;
+      pos[i+2] = (Math.random() - 0.5) * 900;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x93b58c, size: 3.5, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+    const motes = new THREE.Points(geo, mat);
+    scene.add(motes);
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('pointermove', (e) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      mouseX = nx * 80;
+      mouseY = ny * 60;
+      document.documentElement.style.setProperty('--px', nx.toFixed(3));
+      document.documentElement.style.setProperty('--py', ny.toFixed(3));
+    });
+
+    function loop() {
+      requestAnimationFrame(loop);
+      motes.rotation.y += 0.0004;
+      ico.rotation.x += 0.001;
+      ico.rotation.y += 0.0014;
+      camera.position.x += (mouseX - camera.position.x) * 0.03;
+      camera.position.y += (-mouseY - camera.position.y) * 0.03;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    loop();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  })();
+
+  const user = getUser();
+  const initialName = user?.name || 'Guest Learner';
+  document.getElementById('profile-name').textContent = initialName;
+  document.getElementById('profile-avatar').textContent = initialName.charAt(0).toUpperCase();
+  document.getElementById('profile-summary').textContent = `Targeting continuous communication and composure growth — ${initialName.split(' ')[0]} is preparing for top career roles.`;
+  document.getElementById('detail-name').textContent = initialName;
+  document.getElementById('detail-email').textContent = user?.email || 'guest@example.com';
+
+  async function load() {
+    try {
       const { interviews } = await api('/interview/mine');
-      const completed = interviews
+      const completed = (interviews || [])
         .filter((i) => i.status === 'completed')
         .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
 
       renderStats(completed);
       renderHistory(completed);
+    } catch (err) {
+      console.warn('Profile loading fallback:', err);
+      renderStats([]);
+      renderHistory([]);
     }
+  }
 
-    function renderStats(completed) {
-      const el = document.getElementById('profile-stats');
-      const totalScore = completed.reduce((sum, item) => sum + (item.report?.finalScore || 0), 0);
-      const avgScore = completed.length ? Math.round(totalScore / completed.length) : 0;
-      const totalQuestions = completed.reduce((sum, item) => sum + (item.questions?.length || 0), 0);
+  function renderStats(completed) {
+    const el = document.getElementById('profile-stats');
+    const totalScore = completed.reduce((sum, item) => sum + (item.report?.finalScore || 0), 0);
+    const avgScore = completed.length ? Math.round(totalScore / completed.length) : 0;
+    const totalQuestions = completed.reduce((sum, item) => sum + (item.questions?.length || 0), 0);
 
+    el.innerHTML = `
+      <div class="sylva-stat-tile">
+        <div class="stat-num">${completed.length}</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+      <div class="sylva-stat-tile">
+        <div class="stat-num">${avgScore}%</div>
+        <div class="stat-label">Avg Score</div>
+      </div>
+      <div class="sylva-stat-tile">
+        <div class="stat-num">${totalQuestions}</div>
+        <div class="stat-label">Questions</div>
+      </div>
+    `;
+  }
+
+  function renderHistory(completed) {
+    const el = document.getElementById('profile-history');
+    const pill = document.getElementById('history-count-pill');
+    pill.textContent = `${completed.length} session${completed.length === 1 ? '' : 's'}`;
+
+    if (!completed.length) {
       el.innerHTML = `
-        <div class="profile-stat-card">
-          <div class="stat">${completed.length}</div>
-          <div class="stat-label">completed reports</div>
-        </div>
-        <div class="profile-stat-card">
-          <div class="stat" style="color:${scoreColor(avgScore)}">${avgScore}</div>
-          <div class="stat-label">avg. score</div>
-        </div>
-        <div class="profile-stat-card">
-          <div class="stat">${totalQuestions}</div>
-          <div class="stat-label">questions practiced</div>
+        <div style="text-align:center; padding:48px 20px; color:var(--ink-soft);">
+          <p style="font-size:1.05rem;">No completed mock interviews recorded yet.</p>
+          <a href="/interview" class="sylva-btn sylva-btn-primary" style="margin-top:16px;">
+            Start Your First Practice Session &rarr;
+          </a>
         </div>
       `;
+      return;
     }
 
-    function renderHistory(completed) {
-      const el = document.getElementById('profile-history');
-      const countEl = document.getElementById('history-count-pill');
-      const visible = completed.slice(0, 6);
-      countEl.textContent = `Showing ${visible.length} entr${visible.length === 1 ? 'y' : 'ies'}`;
-
-      if (!visible.length) {
-        el.innerHTML = '<div class="empty-state">No completed interviews yet. Finish a mock interview to build your profile history.</div>';
-        return;
-      }
-
-      el.innerHTML = `
-        <div class="dashboard-history-list">
-          ${visible.map((item) => `
-            <div class="dashboard-history-item">
-              <div class="dashboard-history-top">
-                <div>
-                  <div class="dashboard-history-role">${item.role}</div>
-                  <div class="dashboard-history-meta">${formatDate(item.completedAt)} · ${item.questions.length} questions</div>
-                </div>
-                <div class="dashboard-history-score" style="color:${scoreColor(item.report.finalScore)}">${item.report.finalScore}</div>
-              </div>
-              <div class="dashboard-history-actions">
-                <a href="/report.html?id=${item.id}" class="btn btn-secondary">Open report</a>
-              </div>
-            </div>
-          `).join('')}
+    el.innerHTML = completed.map(iv => `
+      <article class="sylva-history-item">
+        <div>
+          <span class="sylva-tag" style="margin:0 0 4px 0;">${iv.role} Track</span>
+          <h3 style="font-size:1.15rem; font-weight:400; color:#fff; margin:2px 0 4px 0;">${formatDate(iv.completedAt)}</h3>
+          <p style="font-size:0.86rem; color:var(--ink-soft); margin:0;">
+            ${iv.questions.length} questions &middot; Duration: ${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min' : 'Live'}
+          </p>
         </div>
-      `;
-    }
+        <div style="display:flex; align-items:center; gap:16px;">
+          <span style="font-size:1.3rem; font-weight:600; color:var(--sylva-green);">
+            ${Math.round(iv.report?.finalScore || 0)}%
+          </span>
+          <a href="/report?id=${iv.id}" class="sylva-btn-sm">View Report &rarr;</a>
+        </div>
+      </article>
+    `).join('');
+  }
 
-    load();
-  </script>
+  function formatDate(iso) {
+    if (!iso) return 'Recent';
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  load();
+</script>
 </body>
 </html>

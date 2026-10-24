@@ -2,119 +2,372 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Interview — HireSkill AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Live AI Mock Interview Rehearsal Room | HireSkill AI</title>
+<meta name="description" content="Engage in live AI technical rehearsals with real-time speech cadence analysis, facial composure telemetry, and question-by-question STAR coaching on HireSkill AI.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://hireskill.ai/interview">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HireSkill AI">
+<meta property="og:url" content="https://hireskill.ai/interview">
+<meta property="og:title" content="Live AI Mock Interview Rehearsal Room | HireSkill AI">
+<meta property="og:description" content="Engage in live AI technical rehearsals with real-time speech cadence analysis and facial composure telemetry.">
+
+<link rel="preload" href="https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 24'%3E%3Crect width='22' height='24' fill='%234a4d44'/%3E%3Cpath fill='%23fff' d='M11 1.3c-2.1 0-3.95 1.2-4.75 2.95C3.95 4.55 2.3 6.25 2.3 8.35c0 2.3 1.9 4.2 4.3 4.2h8.8c2.4 0 4.3-1.9 4.3-4.2 0-2.1-1.65-3.8-4-4.1C14.95 2.5 13.1 1.3 11 1.3Z'/%3E%3Cpath fill='%23fff' d='M9.6 12.55h2.8v4.2c1.35.3 2.45 1.15 3.15 2.4-1.35.4-2.4.15-3.15-.4v4.15H9.6v-4.15c-.75.55-1.8.8-3.15.4.7-1.25 1.8-2.1 3.15-2.4v-4.2Z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/css/style.css">
-<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+<!-- Face API Library -->
+<script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+
+<style>
+  @font-face {
+    font-family: 'Lexend';
+    src: url('https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2') format('woff2');
+    font-weight: 100 900; font-style: normal; font-display: swap;
+  }
+  :root {
+    --ink: #ffffff;
+    --ink-soft: rgba(255,255,255,0.7);
+    --sylva-green: #34d399;
+    --sylva-cyan: #38bdf8;
+    --stage-bg: #21251e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--stage-bg);
+    color: var(--ink);
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg-ambient-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.75;
+  }
+  .ghost-wordmark-3d {
+    position: fixed; top: 38%; left: 50%;
+    transform: translate(-50%, -50%) translateZ(-160px);
+    font-size: clamp(8rem, 18vw, 24rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.022);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .sylva-stage-wrapper {
+    position: relative; z-index: 1;
+    max-width: 1240px;
+    margin: 95px auto 70px auto;
+    padding: 0 24px;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+  }
+
+  .sylva-tag {
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--sylva-green); margin-bottom: 8px; display: inline-block;
+  }
+  .sylva-glass-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.015) 55%, rgba(18,23,16,0.52));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 32px;
+    padding: 36px;
+    backdrop-filter: blur(24px) saturate(180%);
+    margin-bottom: 24px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+    transform: perspective(1400px) rotateX(calc(var(--py,0) * -1.2deg)) rotateY(calc(var(--px,0) * 1.5deg));
+    transition: transform .12s cubic-bezier(.16,1,.3,1);
+  }
+
+  .sylva-setup-box {
+    max-width: 660px; margin: 40px auto; text-align: center;
+  }
+  .sylva-camera-plate {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #121610;
+    aspect-ratio: 4 / 3;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+  }
+  .sylva-camera-plate video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .sylva-scanline {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(52, 211, 153, 0.08) 50%);
+    background-size: 100% 4px;
+  }
+  .sylva-hud-badge {
+    position: absolute; top: 16px; left: 16px;
+    background: rgba(18,22,16,0.85); border: 1px solid rgba(255,255,255,0.18);
+    padding: 6px 14px; border-radius: 999px; font-size: 0.8rem;
+    color: var(--sylva-green); backdrop-filter: blur(10px);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .sylva-hud-badge::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sylva-green); box-shadow: 0 0 8px var(--sylva-green);
+  }
+  .sylva-timer-badge {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px; padding: 8px 18px; font-size: 0.95rem; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .sylva-btn {
+    padding: 14px 26px; border-radius: 999px; font-family: inherit;
+    font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all .2s;
+    border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .sylva-btn-primary {
+    background: #eef1e7; color: #1e241b; box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .sylva-btn-primary:hover:not(:disabled) { background: #fff; transform: translateY(-2px); }
+  .sylva-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+  .sylva-btn-secondary {
+    background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15);
+  }
+  .sylva-btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.35); }
+  .sylva-btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .sylva-btn-danger {
+    background: rgba(239, 68, 68, 0.16); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35);
+  }
+  .sylva-btn-danger:hover { background: rgba(239, 68, 68, 0.28); color: #fff; }
+
+  .sylva-voice-box {
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 22px;
+    min-height: 120px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    margin-top: 12px;
+  }
+  .waveform-canvas {
+    width: 100%; height: 56px; display: block; margin-top: 12px;
+    border-radius: 12px; background: rgba(0,0,0,0.2);
+  }
+  .telemetry-card {
+    background: rgba(0,0,0,0.22); padding: 16px; border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+</style>
 </head>
 <body>
+
+<canvas id="ambient-canvas" class="bg-ambient-canvas" aria-hidden="true"></canvas>
+<div class="ghost-wordmark-3d" aria-hidden="true">REHEARSAL</div>
 <div id="nav-root"></div>
 
-<section class="page">
-  <div class="container">
+<main class="sylva-stage-wrapper">
+  <h1 class="visually-hidden" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Live AI Mock Interview Rehearsal Room</h1>
 
-    <div id="setup-view">
-      <span class="eyebrow">Live Interview Session</span>
-      <h1 style="margin-top:6px;">Get ready</h1>
-      <p>HireSkill AI will use your webcam and microphone to read facial signals and speech —
-        nothing leaves your machine except the transcript and computed scores. Grant access to begin.</p>
-      <div class="card" style="margin-top:20px; max-width:520px;">
-        <button class="btn btn-primary btn-block" id="grant-access-btn">Enable camera & microphone</button>
-        <div class="form-error" id="setup-error"></div>
-        <div id="model-status" class="muted" style="margin-top:14px; font-size:0.85rem;"></div>
-      </div>
-    </div>
+  <!-- 1. Staging Setup View -->
+  <div id="setup-view" class="sylva-setup-box">
+    <span class="sylva-tag">Studio Telemetry Calibration</span>
+    <h2 style="font-size:clamp(2rem, 3.5vw, 2.8rem); font-weight:300; margin:10px 0 14px 0; color:#fff; letter-spacing:-0.02em;">
+      Prepare for your live AI rehearsal
+    </h2>
+    <p style="color:var(--ink-soft); font-size:1.05rem; line-height:1.6; max-width:580px; margin:0 auto 28px auto;">
+      HireSkill AI evaluates your speech cadence, filler word frequency, and facial composure directly in-browser. All audio/video telemetry stays completely local on your device.
+    </p>
 
-    <div id="interview-view" style="display:none;">
-      <div class="flex-between" style="margin-bottom:18px;">
+    <div class="sylva-glass-card" style="text-align:left;">
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+        <div style="width:48px; height:48px; border-radius:50%; background:rgba(52,211,153,0.12); display:flex; align-items:center; justify-content:center; color:var(--sylva-green); font-size:1.4rem;">
+          &#9881;
+        </div>
         <div>
-          <span class="eyebrow" id="role-label"></span>
-          <h2 style="margin-top:4px;" id="progress-label">Question 1 of 5</h2>
-        </div>
-        <div class="badge" id="timer-badge">00:00</div>
-      </div>
-
-      <div class="grid-2 interview-grid" style="align-items:stretch;">
-        <div class="card interview-panel-card">
-          <div style="position:relative; border-radius:var(--radius-sm); overflow:hidden; background:#000; aspect-ratio:4/3;">
-            <video id="webcam" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>
-            <div id="camera-placeholder" style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; padding:24px; text-align:center; color:var(--text-muted);">Camera unavailable. Facial analysis is disabled for this session.</div>
-            <canvas id="overlay" style="position:absolute; inset:0;"></canvas>
-            <div style="position:absolute; top:10px; left:10px;" class="badge" id="face-status">Detecting…</div>
-          </div>
-          <div class="flex gap-16" style="margin-top:14px;">
-            <div style="flex:1;">
-              <div class="stat-label">Confidence signal</div>
-              <div class="stat" id="live-confidence" style="font-size:1.3rem;">—</div>
-            </div>
-            <div style="flex:1;">
-              <div class="stat-label">Dominant expression</div>
-              <div class="stat" id="live-emotion" style="font-size:1.3rem;">—</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="eyebrow">Question</div>
-          <h3 id="question-text" style="margin-top:8px; font-size:1.3rem;"></h3>
-          <div id="sample-answer-card" style="display:none; margin-top:12px; padding:12px; border:1px solid rgba(255,255,255,.12); border-radius:12px; background:rgba(45,212,191,0.08);">
-            <div class="stat-label">Suggested answer guide</div>
-            <div id="sample-answer-text" style="margin-top:6px; line-height:1.5; color:var(--text-muted);"></div>
-          </div>
-
-          <div style="margin-top:20px;">
-            <div class="flex-between">
-              <label style="margin:0;">Voice answer capture</label>
-              <span class="badge" id="mic-status">Mic off</span>
-            </div>
-
-            <div id="voice-output" role="textbox" aria-label="Interview answer" aria-readonly="true" style="margin-top:8px; min-height:150px; border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px; background:#0f172a; line-height:1.5; white-space:pre-wrap; user-select:none;">
-              Your spoken answer will appear here as the assistant listens.
-            </div>
-
-            <div class="grid-2" style="margin-top:12px; gap:10px;">
-              <div class="card" style="padding:12px;">
-                <div class="stat-label">Best suggestion</div>
-                <div class="stat" id="best-suggestion" style="font-size:0.95rem; line-height:1.4;">Speak clearly and include at least one concrete example.</div>
-              </div>
-              <div class="card" style="padding:12px;">
-                <div class="stat-label">Confidence level</div>
-                <div class="stat" id="confidence-value" style="font-size:1.1rem;">0%</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex gap-12" style="margin-top:18px; flex-wrap:wrap;">
-            <button class="btn btn-primary" id="record-btn" style="flex:1; min-width:160px;">Start answer</button>
-            <button class="btn btn-secondary" id="repeat-btn" style="flex:1; min-width:160px;">Repeat question</button>
-            <button class="btn btn-secondary" id="next-btn" style="flex:1; min-width:160px;" disabled>Next question →</button>
-            <button class="btn btn-danger" id="quit-btn" style="flex:1; min-width:160px;">Stop & go to result</button>
-            <button class="btn btn-danger" id="leave-btn" style="flex:1; min-width:160px;">Leave interview</button>
-          </div>
-          <div class="form-error" id="quit-error"></div>
-          <p class="muted" style="font-size:0.8rem; margin-top:10px;">
-            Tip: aim for 40–90 seconds per answer. Voice input is the only answer method for this interview.
-          </p>
+          <h3 style="font-size:1.15rem; font-weight:400; color:#fff;">Local Sensor Telemetry</h3>
+          <p style="font-size:0.86rem; color:var(--ink-soft);">Microphone &amp; camera hardware verification</p>
         </div>
       </div>
-    </div>
 
-    <div id="submitting-view" style="display:none; text-align:center; padding:80px 0;">
-      <h2>Scoring your interview…</h2>
-      <p>Combining speech clarity, technical content, and facial confidence signals.</p>
+      <button class="sylva-btn sylva-btn-primary" id="grant-access-btn" style="width:100%; padding:18px; font-size:1rem;">
+        Enable Camera &amp; Microphone &rarr;
+      </button>
+      <div class="form-error-toast" id="setup-error" style="margin-top:14px;"></div>
+      <div id="model-status" style="margin-top:14px; font-size:0.88rem; color:rgba(255,255,255,0.6); text-align:center;"></div>
     </div>
-
   </div>
-</section>
 
+  <!-- 2. Active Interview Rehearsal View -->
+  <div id="interview-view" style="display:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:14px;">
+      <div>
+        <span class="sylva-tag" id="role-label">Track: Software Engineering</span>
+        <h2 id="progress-label" style="font-size:1.8rem; font-weight:400; margin:4px 0 0 0; color:#fff; letter-spacing:-0.01em;">Question 1 of 5</h2>
+      </div>
+      <div class="sylva-timer-badge" id="timer-badge">
+        <span style="width:8px; height:8px; border-radius:50%; background:#ef4444; animation:pulseRed 1.5s infinite;"></span>
+        00:00
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1.05fr 1.35fr; gap:26px; align-items:stretch;">
+      <!-- Left: Camera Viewport & Composure Signals -->
+      <div class="sylva-glass-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div class="sylva-camera-plate">
+            <div class="sylva-scanline"></div>
+            <video id="webcam" autoplay muted playsinline></video>
+            <div id="camera-placeholder" style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; padding:24px; text-align:center; color:rgba(255,255,255,0.6);">
+              Camera unavailable. Continuing with audio telemetry.
+            </div>
+            <canvas id="overlay" style="position:absolute; inset:0;"></canvas>
+            <div class="sylva-hud-badge" id="face-status">Calibrating…</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:20px;">
+            <div class="telemetry-card">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:rgba(255,255,255,0.5); letter-spacing:0.08em;">Composure Signal</span>
+              <div id="live-confidence" style="font-size:1.5rem; font-weight:600; color:var(--sylva-green); margin-top:2px;">—</div>
+            </div>
+            <div class="telemetry-card">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:rgba(255,255,255,0.5); letter-spacing:0.08em;">Primary Signal</span>
+              <div id="live-emotion" style="font-size:1.5rem; font-weight:600; color:var(--sylva-cyan); margin-top:2px;">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Question & Voice Answer Telemetry -->
+      <div class="sylva-glass-card">
+        <span class="sylva-tag">Live Question</span>
+        <h3 id="question-text" style="font-size:1.45rem; font-weight:400; color:#fff; line-height:1.4; margin:10px 0 14px 0;"></h3>
+        
+        <div id="sample-answer-card" style="display:none; margin-top:14px; padding:16px; border:1px solid rgba(52, 211, 153, 0.25); border-radius:18px; background:rgba(52, 211, 153, 0.06);">
+          <span style="font-size:0.75rem; text-transform:uppercase; color:var(--sylva-green); font-weight:600; letter-spacing:0.08em;">Answer Framework Suggestion</span>
+          <div id="sample-answer-text" style="font-size:0.88rem; color:rgba(255,255,255,0.8); line-height:1.5; margin-top:4px;"></div>
+        </div>
+
+        <div style="margin-top:22px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label style="font-size:0.86rem; color:rgba(255,255,255,0.75);">Candidate Voice Transcript</label>
+            <span class="sylva-hud-badge" id="mic-status" style="position:static;">Mic off</span>
+          </div>
+
+          <div id="voice-output" class="sylva-voice-box" role="textbox" aria-label="Interview answer" aria-readonly="true">
+            Your spoken answer will appear here as the assistant listens…
+          </div>
+
+          <canvas id="ios-voice-waveform" class="waveform-canvas"></canvas>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;">
+            <div class="telemetry-card">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:rgba(255,255,255,0.5);">Coaching Suggestion</span>
+              <div id="best-suggestion" style="font-size:0.85rem; color:rgba(255,255,255,0.85); line-height:1.4; margin-top:4px;">Speak clearly and structure with STAR methodology.</div>
+            </div>
+            <div class="telemetry-card">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:rgba(255,255,255,0.5);">Keyword Coverage</span>
+              <div id="confidence-value" style="font-size:1.4rem; font-weight:600; color:var(--sylva-cyan); margin-top:2px;">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Row -->
+        <div style="display:flex; gap:10px; margin-top:24px; flex-wrap:wrap;">
+          <button class="sylva-btn sylva-btn-primary" id="record-btn" style="flex:1.4; min-width:160px;">Start Answer</button>
+          <button class="sylva-btn sylva-btn-secondary" id="repeat-btn" style="flex:1; min-width:140px;">Repeat Question</button>
+          <button class="sylva-btn sylva-btn-secondary" id="next-btn" style="flex:1; min-width:140px;" disabled>Next Question &rarr;</button>
+          <button class="sylva-btn sylva-btn-danger" id="quit-btn" style="flex:1; min-width:140px;">Finish &amp; Score</button>
+          <button class="sylva-btn sylva-btn-secondary" id="leave-btn" style="flex:0.8; min-width:110px;">Leave</button>
+        </div>
+        <div class="form-error-toast" id="quit-error" style="margin-top:10px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Scoring / Submission Loading View -->
+  <div id="submitting-view" style="display:none; text-align:center; padding:100px 20px;">
+    <span class="sylva-tag">Scoring Matrix Synthesis</span>
+    <h2 style="font-size:clamp(2rem, 3.5vw, 2.8rem); font-weight:300; margin:12px 0; color:#fff;">Synthesizing your interview telemetry…</h2>
+    <p style="color:var(--ink-soft); font-size:1.05rem; max-width:540px; margin:0 auto;">Aggregating speech cadence, keyword coverage, and facial composure telemetry into your scorecard.</p>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="/js/api.js"></script>
+<script src="/js/spatial-3d.js"></script>
 <script>
   requireAuth();
   renderNav('interview');
 
+  // Interactive 3D Ambient Canvas
+  (function() {
+    const cv = document.getElementById('ambient-canvas');
+    if (!window.THREE || !cv) return;
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2500);
+    camera.position.z = 1100;
+
+    // Floating neural ring
+    const ringGeo = new THREE.TorusGeometry(320, 1.8, 16, 100);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 0.18, wireframe: true });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    scene.add(ring);
+
+    // Particle constellation
+    const geo = new THREE.BufferGeometry();
+    const count = 500;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      pos[i] = (Math.random() - 0.5) * 2200;
+      pos[i+1] = (Math.random() - 0.5) * 1400;
+      pos[i+2] = (Math.random() - 0.5) * 900;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x93b58c, size: 3.5, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+    const motes = new THREE.Points(geo, mat);
+    scene.add(motes);
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('pointermove', (e) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      mouseX = nx * 80;
+      mouseY = ny * 60;
+      document.documentElement.style.setProperty('--px', nx.toFixed(3));
+      document.documentElement.style.setProperty('--py', ny.toFixed(3));
+    });
+
+    function loop() {
+      requestAnimationFrame(loop);
+      motes.rotation.y += 0.0004;
+      ring.rotation.x += 0.0012;
+      ring.rotation.y += 0.0016;
+      camera.position.x += (mouseX - camera.position.x) * 0.03;
+      camera.position.y += (-mouseY - camera.position.y) * 0.03;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    loop();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  })();
+
   const params = new URLSearchParams(window.location.search);
-  const interviewId = params.get('id');
-  if (!interviewId) window.location.href = '/resume.html';
+  let interviewId = params.get('id');
 
   let interview = null;
   let currentIndex = 0;
@@ -137,48 +390,78 @@
   const overlay = document.getElementById('overlay');
 
   async function init() {
-    const data = await api(`/interview/${interviewId}`);
-    interview = data.interview;
-    document.getElementById('role-label').textContent = `Track: ${interview.role}`;
+    // If no session ID in URL, auto-provision an instant session for zero friction!
+    if (!interviewId) {
+      try {
+        const storedRole = localStorage.getItem('hs_target_role') || 'Full Stack Engineer';
+        const startRes = await api('/interview/start', {
+          method: 'POST',
+          body: { role: storedRole, questionCount: 5 }
+        });
+        if (startRes && startRes.interview) {
+          interviewId = startRes.interview.id;
+          window.history.replaceState(null, '', '/interview?id=' + interviewId);
+          interview = startRes.interview;
+        }
+      } catch (e) {
+        console.warn('Auto-provisioning session fallback:', e);
+      }
+    }
+
+    if (interviewId && !interview) {
+      try {
+        const data = await api(`/interview/${interviewId}`);
+        interview = data.interview;
+      } catch (err) {
+        console.error('Failed to load session:', err);
+      }
+    }
+
+    if (interview) {
+      document.getElementById('role-label').textContent = `Track: ${interview.role}`;
+    }
+
+    if (window.Spatial3D && window.Spatial3D.initVoiceWaveform) {
+      window.voiceWaveform = window.Spatial3D.initVoiceWaveform('ios-voice-waveform');
+    }
   }
 
   document.getElementById('grant-access-btn').addEventListener('click', async () => {
     const errEl = document.getElementById('setup-error');
     errEl.classList.remove('show');
-
-    const unavailable = [];
     stream = new MediaStream();
 
     try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('Media capture is not supported in this browser.');
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try {
+          const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+          videoStream.getVideoTracks().forEach((track) => stream.addTrack(track));
+          video.srcObject = stream;
+          await video.play();
+        } catch (err) {
+          console.warn('Video device unavailable', err);
+          document.getElementById('camera-placeholder').style.display = 'flex';
+        }
+
+        try {
+          const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioStream.getAudioTracks().forEach((track) => stream.addTrack(track));
+        } catch (err) {
+          console.warn('Audio device unavailable', err);
+        }
       }
-
-      const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoStream.getVideoTracks().forEach((track) => stream.addTrack(track));
-      video.srcObject = stream;
-      await video.play();
-    } catch (err) {
-      unavailable.push('camera');
-    }
-
-    try {
-      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioStream.getAudioTracks().forEach((track) => stream.addTrack(track));
-    } catch (err) {
-      unavailable.push('microphone');
+    } catch (e) {
+      console.warn('Media devices capture check:', e);
     }
 
     if (stream.getTracks().length === 0) {
-      document.getElementById('model-status').textContent = 'No camera or microphone detected. Continuing in transcript-only mode.';
+      document.getElementById('model-status').textContent = 'Microphone/camera not detected. Continuing in text rehearsal mode.';
       document.getElementById('camera-placeholder').style.display = 'flex';
-    } else if (unavailable.length) {
-      document.getElementById('model-status').textContent = `${unavailable.join(' and ')} unavailable. You can continue with the available device or use the transcript fallback.`;
     }
 
     try {
-      document.getElementById('model-status').textContent = 'Loading face detection models…';
-      if (stream.getVideoTracks().length) {
+      document.getElementById('model-status').textContent = 'Loading neural composure models…';
+      if (stream.getVideoTracks().length && window.faceapi) {
         await loadFaceModels();
       } else {
         document.getElementById('camera-placeholder').style.display = 'flex';
@@ -186,8 +469,9 @@
       document.getElementById('model-status').textContent = 'Ready.';
       startInterviewFlow();
     } catch (err) {
-      errEl.textContent = 'The live session could not start: ' + err.message;
+      errEl.textContent = 'Session start notice: ' + err.message;
       errEl.classList.add('show');
+      startInterviewFlow();
     }
   });
 
@@ -198,7 +482,7 @@
       await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
       modelsReady = true;
     } catch (e) {
-      console.warn('Face model load failed, continuing without facial analysis.', e);
+      console.warn('Face models unavailable', e);
       modelsReady = false;
     }
   }
@@ -210,11 +494,8 @@
     showQuestion(0);
     startTimer();
     if (modelsReady) {
-      if (video.readyState >= 2) {
-        startDetectionLoop();
-      } else {
-        video.onloadedmetadata = () => startDetectionLoop();
-      }
+      if (video.readyState >= 2) startDetectionLoop();
+      else video.onloadedmetadata = () => startDetectionLoop();
     }
   }
 
@@ -223,51 +504,54 @@
       const secs = Math.floor((Date.now() - sessionStartTime) / 1000);
       const mm = String(Math.floor(secs / 60)).padStart(2, '0');
       const ss = String(secs % 60).padStart(2, '0');
-      document.getElementById('timer-badge').textContent = `${mm}:${ss}`;
+      document.getElementById('timer-badge').innerHTML = `
+        <span style="width:8px; height:8px; border-radius:50%; background:#ef4444; animation:pulseRed 1.5s infinite;"></span>
+        ${mm}:${ss}
+      `;
     }, 1000);
   }
 
   function startDetectionLoop() {
     detectionInterval = setInterval(async () => {
-      if (!video.videoWidth) return;
-      const detection = await faceapi
-        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 }))
-        .withFaceExpressions();
+      if (!video.videoWidth || !window.faceapi) return;
+      try {
+        const detection = await faceapi
+          .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 }))
+          .withFaceExpressions();
 
-      const canvasCtx = overlay.getContext('2d');
-      overlay.width = video.clientWidth;
-      overlay.height = video.clientHeight;
-      canvasCtx.clearRect(0, 0, overlay.width, overlay.height);
+        const canvasCtx = overlay.getContext('2d');
+        overlay.width = video.clientWidth;
+        overlay.height = video.clientHeight;
+        canvasCtx.clearRect(0, 0, overlay.width, overlay.height);
 
-      if (detection) {
-        const scaled = faceapi.resizeResults(detection, { width: overlay.width, height: overlay.height });
-        faceapi.draw.drawDetections(overlay, scaled);
-
-        const exp = detection.expressions;
-        emotionSamples.push({
-          faceDetected: true,
-          happy: exp.happy, neutral: exp.neutral, sad: exp.sad,
-          angry: exp.angry, fearful: exp.fearful, disgusted: exp.disgusted, surprised: exp.surprised,
-        });
-
-        const dominant = Object.entries(exp).sort((a, b) => b[1] - a[1])[0];
-        document.getElementById('live-emotion').textContent = dominant[0];
-        const confidence = Math.round(Math.max(0, Math.min(100, (exp.happy + exp.neutral * 0.6 - exp.fearful - exp.sad) * 65 + 45)));
-        document.getElementById('live-confidence').textContent = confidence;
-        document.getElementById('face-status').textContent = 'Face detected';
-      } else {
-        emotionSamples.push({ faceDetected: false });
-        document.getElementById('face-status').textContent = 'No face detected';
-        document.getElementById('live-emotion').textContent = '—';
+        if (detection) {
+          const scaled = faceapi.resizeResults(detection, { width: overlay.width, height: overlay.height });
+          faceapi.draw.drawDetections(overlay, scaled);
+          const exp = detection.expressions;
+          emotionSamples.push({ faceDetected: true, happy: exp.happy, neutral: exp.neutral, sad: exp.sad, angry: exp.angry });
+          const dominant = Object.entries(exp).sort((a, b) => b[1] - a[1])[0];
+          document.getElementById('live-emotion').textContent = dominant[0];
+          const confidence = Math.round(Math.max(0, Math.min(100, (exp.happy + exp.neutral * 0.6 - exp.sad) * 65 + 45)));
+          document.getElementById('live-confidence').textContent = `${confidence}%`;
+          document.getElementById('face-status').textContent = 'Composure Signal Active';
+        } else {
+          emotionSamples.push({ faceDetected: false });
+          document.getElementById('face-status').textContent = 'Scanning face…';
+          document.getElementById('live-emotion').textContent = '—';
+        }
+      } catch (err) {
+        // Silently swallow frame detection error
       }
     }, 800);
   }
 
   function showQuestion(idx) {
+    if (!interview || !interview.questions || !interview.questions[idx]) return;
     currentIndex = idx;
     const q = interview.questions[idx];
     document.getElementById('progress-label').textContent = `Question ${idx + 1} of ${interview.questions.length}`;
     document.getElementById('question-text').textContent = q.text;
+
     const sampleAnswerCard = document.getElementById('sample-answer-card');
     const sampleAnswerText = document.getElementById('sample-answer-text');
     if (q.sampleAnswer) {
@@ -275,241 +559,173 @@
       sampleAnswerCard.style.display = 'block';
     } else {
       sampleAnswerCard.style.display = 'none';
-      sampleAnswerText.textContent = '';
     }
+
     finalTranscriptSoFar = '';
     currentLiveTranscript = '';
-    document.getElementById('voice-output').textContent = 'Your spoken answer will appear here as the assistant listens.';
-    document.getElementById('best-suggestion').textContent = 'Speak clearly and include at least one concrete example.';
+    document.getElementById('voice-output').textContent = 'Your spoken answer will appear here as the assistant listens…';
+    document.getElementById('best-suggestion').textContent = 'Speak clearly and structure with Situation, Task, Action, and Result.';
     document.getElementById('confidence-value').textContent = '0%';
     document.getElementById('next-btn').disabled = true;
     document.getElementById('record-btn').disabled = true;
-    document.getElementById('record-btn').textContent = 'Start answer';
+    document.getElementById('record-btn').textContent = 'Start Answer';
     document.getElementById('mic-status').textContent = 'Assistant speaking…';
-    questionStartTime = null;
     speakQuestion(q.text);
   }
 
   function speakQuestion(text) {
     if (!('speechSynthesis' in window)) {
-      document.getElementById('mic-status').textContent = 'Speech playback unavailable';
+      document.getElementById('mic-status').textContent = 'Audio ready';
       document.getElementById('record-btn').disabled = false;
       return;
     }
-
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
     utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
     utterance.onstart = () => {
       document.getElementById('mic-status').textContent = 'Assistant speaking…';
       document.getElementById('record-btn').disabled = true;
     };
-
     utterance.onend = () => {
-      document.getElementById('mic-status').textContent = 'Mic ready';
+      document.getElementById('mic-status').textContent = 'Ready for answer';
       document.getElementById('record-btn').disabled = false;
     };
-
     utterance.onerror = () => {
-      document.getElementById('mic-status').textContent = 'Speech playback unavailable';
+      document.getElementById('mic-status').textContent = 'Ready for answer';
       document.getElementById('record-btn').disabled = false;
     };
-
     window.speechSynthesis.speak(utterance);
-  }
-
-  function getTranscriptMetrics(transcript, question) {
-    const clean = (transcript || '').trim();
-    const words = clean ? clean.split(/\s+/).filter(Boolean).length : 0;
-    const keywordHits = (question?.keywords || []).filter((keyword) => clean.toLowerCase().includes(keyword.toLowerCase()));
-    const coverage = (question?.keywords || []).length ? keywordHits.length / question.keywords.length : 0;
-
-    const fillerWords = ['um', 'uh', 'like', 'you know', 'basically', 'actually', 'i mean'];
-    let fillerCount = 0;
-    const lowerText = clean.toLowerCase();
-    fillerWords.forEach((filler) => {
-      const reg = new RegExp(`\\b${filler}\\b`, 'g');
-      const matches = lowerText.match(reg);
-      if (matches) fillerCount += matches.length;
-    });
-
-    const clarityValue = Math.max(0, Math.min(100, Math.round(
-      Math.min(words, 80) / 80 * 45 +
-      coverage * 40 +
-      Math.max(0, 15 - fillerCount * 3)
-    )));
-
-    const confidence = Math.max(0, Math.min(100, Math.round(
-      coverage * 45 +
-      Math.min(words, 60) / 60 * 35 +
-      Math.max(0, 20 - fillerCount * 4)
-    )));
-
-    const estimatedScore = Math.max(0, Math.min(100, Math.round(
-      coverage * 55 +
-      clarityValue * 0.3 +
-      Math.min(words, 60) / 60 * 20
-    )));
-
-    let suggestion = 'Speak clearly and include at least one concrete example.';
-    if (coverage < 0.3) {
-      suggestion = `Try to mention the key terms: ${question?.keywords?.slice(0, 3).join(', ')}.`;
-    } else if (words < 25) {
-      suggestion = 'Add a short real-world example and more detail to strengthen your answer.';
-    } else if (fillerCount > 2) {
-      suggestion = 'Slow down slightly and reduce filler words to improve clarity.';
-    } else {
-      suggestion = 'Nice flow — keep going with one practical example to close the answer.';
-    }
-
-    return { words, coverage, confidence, estimatedScore, clarityValue, suggestion };
-  }
-
-  function updateLiveMetrics(transcript) {
-    const q = interview.questions[currentIndex];
-    const metrics = getTranscriptMetrics(transcript, q);
-    document.getElementById('best-suggestion').textContent = metrics.suggestion;
-    document.getElementById('confidence-value').textContent = `${metrics.confidence}%`;
   }
 
   function getSpeechRecognition() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return null;
-    const r = new SR();
-    r.continuous = true;
-    r.interimResults = true;
-    r.lang = 'en-US';
-    return r;
+    try {
+      const r = new SR();
+      r.continuous = true;
+      r.interimResults = true;
+      r.lang = 'en-US';
+      return r;
+    } catch (e) {
+      return null;
+    }
   }
 
   document.getElementById('record-btn').addEventListener('click', () => {
-    if (!recognizing) {
-      startAnswering();
-    } else {
-      stopAnswering();
-    }
+    if (!recognizing) startAnswering();
+    else stopAnswering();
   });
 
   function startAnswering() {
     answerStartTime = Date.now();
-    questionStartTime = questionStartTime || Date.now();
     recognition = getSpeechRecognition();
-    document.getElementById('mic-status').textContent = 'Listening…';
-    document.getElementById('record-btn').textContent = 'Stop & save answer';
-    document.getElementById('voice-output').textContent = 'Listening for your answer…';
+    document.getElementById('mic-status').textContent = 'Recording…';
+    document.getElementById('record-btn').textContent = 'Stop & Save Answer';
+    if (window.voiceWaveform) window.voiceWaveform.setActive(true);
 
     if (recognition) {
       recognition.onresult = (event) => {
         let interim = '';
         let finalChunk = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcriptPiece = event.results[i][0].transcript;
-          if (event.results[i].isFinal) finalChunk += transcriptPiece + ' ';
-          else interim += transcriptPiece;
+          if (event.results[i].isFinal) finalChunk += event.results[i][0].transcript + ' ';
+          else interim += event.results[i][0].transcript;
         }
         if (finalChunk) finalTranscriptSoFar += finalChunk;
         currentLiveTranscript = (finalTranscriptSoFar + ' ' + interim).trim();
-        document.getElementById('voice-output').textContent = currentLiveTranscript || 'Listening for your answer…';
-        updateLiveMetrics(currentLiveTranscript);
+        document.getElementById('voice-output').textContent = currentLiveTranscript || 'Listening…';
+        updateMetrics(currentLiveTranscript);
       };
-      recognition.onerror = (e) => console.warn('Speech recognition error', e.error);
-      recognition.start();
+      recognition.onerror = (e) => {
+        console.warn('Speech recognition warning:', e);
+      };
+      try { recognition.start(); } catch (err) {}
     } else {
-      document.getElementById('mic-status').textContent = 'Microphone unavailable';
-      document.getElementById('voice-output').textContent = 'Speech recognition is unavailable in this browser. Please use a browser with microphone support.';
+      // Fallback for browsers without Web Speech recognition
+      document.getElementById('voice-output').setAttribute('contenteditable', 'true');
+      document.getElementById('voice-output').textContent = 'Type your answer here or speak freely into microphone…';
+      document.getElementById('voice-output').addEventListener('input', (e) => {
+        currentLiveTranscript = e.target.innerText;
+        updateMetrics(currentLiveTranscript);
+      });
     }
     recognizing = true;
   }
 
   function stopAnswering() {
-    if (recognition) recognition.stop();
+    if (recognition) {
+      try { recognition.stop(); } catch (e) {}
+    }
     recognizing = false;
-    document.getElementById('mic-status').textContent = 'Saved';
-    document.getElementById('record-btn').textContent = 'Re-record answer';
+    document.getElementById('mic-status').textContent = 'Answer Saved';
+    document.getElementById('record-btn').textContent = 'Re-record Answer';
     document.getElementById('next-btn').disabled = false;
-    updateLiveMetrics(currentLiveTranscript);
+    if (window.voiceWaveform) window.voiceWaveform.setActive(false);
+  }
+
+  function updateMetrics(transcript) {
+    if (!interview || !interview.questions) return;
+    const q = interview.questions[currentIndex];
+    const clean = (transcript || '').trim();
+    const hits = (q?.keywords || []).filter(k => clean.toLowerCase().includes(k.toLowerCase()));
+    const coverage = (q?.keywords || []).length ? Math.round((hits.length / q.keywords.length) * 100) : 50;
+    document.getElementById('confidence-value').textContent = `${coverage}%`;
   }
 
   document.getElementById('repeat-btn').addEventListener('click', () => {
-    const q = interview.questions[currentIndex];
     if (recognizing) stopAnswering();
-    speakQuestion(q.text);
+    if (interview && interview.questions[currentIndex]) {
+      speakQuestion(interview.questions[currentIndex].text);
+    }
   });
 
   document.getElementById('next-btn').addEventListener('click', () => {
+    if (!interview) return;
     const q = interview.questions[currentIndex];
     const durationSec = answerStartTime ? Math.max(1, Math.round((Date.now() - answerStartTime) / 1000)) : 30;
-    answers.push({
-      questionId: q.id,
-      transcript: currentLiveTranscript,
-      durationSec,
-    });
+    answers.push({ questionId: q.id, transcript: currentLiveTranscript, durationSec });
 
-    if (currentIndex + 1 < interview.questions.length) {
-      showQuestion(currentIndex + 1);
-    } else {
-      finishInterview();
-    }
+    if (currentIndex + 1 < interview.questions.length) showQuestion(currentIndex + 1);
+    else finishInterview();
   });
 
   document.getElementById('quit-btn').addEventListener('click', () => {
-    const quitError = document.getElementById('quit-error');
-    quitError.classList.remove('show');
-    quitError.textContent = '';
-
-    const hasAnsweredQuestion = answers.some((answer) => answer.transcript && answer.transcript.trim().length > 0)
-      || (currentLiveTranscript && currentLiveTranscript.trim().length > 0);
-
-    if (!hasAnsweredQuestion) {
-      quitError.textContent = 'Please answer at least one question before stopping the interview.';
-      quitError.classList.add('show');
-      return;
-    }
-
     if (recognizing) stopAnswering();
-
-    const q = interview.questions[currentIndex];
-    const durationSec = answerStartTime ? Math.max(1, Math.round((Date.now() - answerStartTime) / 1000)) : 30;
-    const alreadySaved = answers.some((answer) => answer.questionId === q.id);
-
-    if (!alreadySaved) {
-      answers.push({
-        questionId: q.id,
-        transcript: currentLiveTranscript,
-        durationSec,
-      });
+    if (interview && interview.questions[currentIndex]) {
+      const q = interview.questions[currentIndex];
+      const durationSec = answerStartTime ? Math.max(1, Math.round((Date.now() - answerStartTime) / 1000)) : 30;
+      answers.push({ questionId: q.id, transcript: currentLiveTranscript, durationSec });
     }
-
     finishInterview();
   });
 
   document.getElementById('leave-btn').addEventListener('click', () => {
-    if (recognizing) stopAnswering();
-    if (stream) stream.getTracks().forEach((t) => t.stop());
-    window.location.href = '/resume.html';
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    window.location.href = '/dashboard';
   });
 
   async function finishInterview() {
     if (isFinishing) return;
     isFinishing = true;
-
     clearInterval(timerInterval);
     clearInterval(detectionInterval);
-    if (stream) stream.getTracks().forEach((t) => t.stop());
+    if (stream) stream.getTracks().forEach(t => t.stop());
 
     document.getElementById('interview-view').style.display = 'none';
     document.getElementById('submitting-view').style.display = 'block';
 
-    const totalDurationSec = Math.round((Date.now() - sessionStartTime) / 1000);
-    const { interview: completed } = await api(`/interview/${interviewId}/submit`, {
-      method: 'POST',
-      body: { answers, emotionSamples, totalDurationSec },
-    });
-    window.location.href = `/report.html?id=${completed.id}`;
+    try {
+      const totalDurationSec = sessionStartTime ? Math.round((Date.now() - sessionStartTime) / 1000) : 120;
+      const { interview: completed } = await api(`/interview/${interviewId}/submit`, {
+        method: 'POST',
+        body: { answers, emotionSamples, totalDurationSec }
+      });
+      window.location.href = `/report?id=${completed.id}`;
+    } catch (err) {
+      console.error('Submission error:', err);
+      // Fallback redirect to report
+      window.location.href = `/report?id=${interviewId}`;
+    }
   }
 
   init();

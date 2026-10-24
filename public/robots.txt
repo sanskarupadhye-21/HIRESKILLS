@@ -1,0 +1,31 @@
+# Production Robots.txt for HireSkill AI
+# https://hireskill.ai/
+
+User-agent: *
+Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+Allow: /images/
+
+# Disallow API endpoints, uploads, and private interview recordings
+Disallow: /api/
+Disallow: /uploads/
+Disallow: /interview?*
+Disallow: /interview.html*
+Disallow: /report?*
+Disallow: /report.html*
+
+# Google & Bing Specific Crawl Rules
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /uploads/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /uploads/
+
+# Sitemap index location
+Sitemap: https://hireskill.ai/sitemap.xml

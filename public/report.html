@@ -2,23 +2,239 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interview Report — HireSkill AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Mock Interview Scorecard &amp; Feedback | HireSkill AI</title>
+<meta name="description" content="View comprehensive AI mock interview evaluation scorecards with speech pace telemetry, facial composure signals, STAR feedback, and coaching suggestions.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://hireskill.ai/report">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HireSkill AI">
+<meta property="og:url" content="https://hireskill.ai/report">
+<meta property="og:title" content="AI Mock Interview Scorecard &amp; Feedback | HireSkill AI">
+<meta property="og:description" content="View comprehensive AI mock interview evaluation scorecards with speech pace telemetry and facial composure signals.">
+
+<link rel="preload" href="https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 24'%3E%3Crect width='22' height='24' fill='%234a4d44'/%3E%3Cpath fill='%23fff' d='M11 1.3c-2.1 0-3.95 1.2-4.75 2.95C3.95 4.55 2.3 6.25 2.3 8.35c0 2.3 1.9 4.2 4.3 4.2h8.8c2.4 0 4.3-1.9 4.3-4.2 0-2.1-1.65-3.8-4-4.1C14.95 2.5 13.1 1.3 11 1.3Z'/%3E%3Cpath fill='%23fff' d='M9.6 12.55h2.8v4.2c1.35.3 2.45 1.15 3.15 2.4-1.35.4-2.4.15-3.15-.4v4.15H9.6v-4.15c-.75.55-1.8.8-3.15.4.7-1.25 1.8-2.1 3.15-2.4v-4.2Z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/css/style.css">
+
+<!-- Schema.org JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://hireskill.ai/report#webpage",
+      "url": "https://hireskill.ai/report",
+      "name": "AI Mock Interview Scorecard & Feedback Report",
+      "description": "Comprehensive AI interview scorecard analyzing communication cadence, technical coverage, and composure."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://hireskill.ai/report#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hireskill.ai/" },
+        { "@type": "ListItem", "position": 2, "name": "Reports", "item": "https://hireskill.ai/report" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  @font-face {
+    font-family: 'Lexend';
+    src: url('https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2') format('woff2');
+    font-weight: 100 900; font-style: normal; font-display: swap;
+  }
+  :root {
+    --ink: #ffffff;
+    --ink-soft: rgba(255,255,255,0.7);
+    --sylva-green: #34d399;
+    --sylva-cyan: #38bdf8;
+    --stage-bg: #21251e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--stage-bg);
+    color: var(--ink);
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg-ambient-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.75;
+  }
+  .ghost-wordmark-3d {
+    position: fixed; top: 38%; left: 50%;
+    transform: translate(-50%, -50%) translateZ(-160px);
+    font-size: clamp(7.5rem, 17vw, 22rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.022);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .sylva-stage-wrapper {
+    position: relative; z-index: 1;
+    max-width: 1140px;
+    margin: 100px auto 70px auto;
+    padding: 0 24px;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+  }
+
+  .sylva-tag {
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--sylva-green); margin-bottom: 8px; display: inline-block;
+  }
+  .sylva-glass-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.015) 55%, rgba(18,23,16,0.52));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 32px;
+    padding: 38px;
+    backdrop-filter: blur(24px) saturate(180%);
+    margin-bottom: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+    transform: perspective(1400px) rotateX(calc(var(--py,0) * -1.2deg)) rotateY(calc(var(--px,0) * 1.5deg));
+    transition: transform .12s cubic-bezier(.16,1,.3,1);
+  }
+
+  .sylva-score-overview-grid {
+    display: grid; grid-template-columns: 240px 1fr; gap: 36px; align-items: center;
+  }
+  @media (max-width: 768px) {
+    .sylva-score-overview-grid { grid-template-columns: 1fr; justify-items: center; }
+  }
+  .sylva-score-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .sylva-score-row:last-child { border-bottom: none; }
+  
+  .sylva-q-card {
+    background: rgba(0,0,0,0.24);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+    padding: 26px;
+    margin-top: 20px;
+    transition: border-color .2s;
+  }
+  .sylva-q-card:hover {
+    border-color: rgba(52, 211, 153, 0.3);
+  }
+
+  .sylva-btn {
+    padding: 14px 28px; border-radius: 999px; font-weight: 600;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.92rem; transition: all .2s; border: none; cursor: pointer;
+  }
+  .sylva-btn-primary {
+    background: #eef1e7; color: #1e241b; box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .sylva-btn-primary:hover { background: #fff; transform: translateY(-2px); }
+  .sylva-btn-secondary {
+    background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15);
+  }
+  .sylva-btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.35); }
+
+  .sylva-chip-pill {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px; padding: 7px 18px; font-size: 0.84rem; color: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+  }
+</style>
 </head>
 <body>
+
+<canvas id="ambient-canvas" class="bg-ambient-canvas" aria-hidden="true"></canvas>
+<div class="ghost-wordmark-3d" aria-hidden="true">SCORECARD</div>
 <div id="nav-root"></div>
 
-<section class="page">
-  <div class="container" id="report-root">
-    <div class="empty-state">Loading report…</div>
+<main class="sylva-stage-wrapper">
+  <div id="report-root">
+    <div class="sylva-glass-card" style="text-align:center; padding:80px 24px;">
+      <span class="sylva-tag">Telemetry Analytics Engine</span>
+      <h2 style="font-size:2.2rem; font-weight:300; color:#fff; margin-top:10px;">Loading interview scorecard…</h2>
+      <p style="color:var(--ink-soft); margin-top:8px;">Fetching telemetry insights, speech cadences, and STAR feedback breakdown.</p>
+    </div>
   </div>
-</section>
+</main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="/js/api.js"></script>
+<script src="/js/spatial-3d.js"></script>
 <script>
   requireAuth();
   renderNav('report');
+
+  // Interactive 3D Ambient Canvas
+  (function() {
+    const cv = document.getElementById('ambient-canvas');
+    if (!window.THREE || !cv) return;
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2500);
+    camera.position.z = 1100;
+
+    // Floating torus knot
+    const knotGeo = new THREE.TorusKnotGeometry(180, 16, 80, 16);
+    const knotMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.12, wireframe: true });
+    const knot = new THREE.Mesh(knotGeo, knotMat);
+    scene.add(knot);
+
+    // Particle constellation
+    const geo = new THREE.BufferGeometry();
+    const count = 500;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      pos[i] = (Math.random() - 0.5) * 2200;
+      pos[i+1] = (Math.random() - 0.5) * 1400;
+      pos[i+2] = (Math.random() - 0.5) * 900;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x93b58c, size: 3.5, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+    const motes = new THREE.Points(geo, mat);
+    scene.add(motes);
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('pointermove', (e) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      mouseX = nx * 80;
+      mouseY = ny * 60;
+      document.documentElement.style.setProperty('--px', nx.toFixed(3));
+      document.documentElement.style.setProperty('--py', ny.toFixed(3));
+    });
+
+    function loop() {
+      requestAnimationFrame(loop);
+      motes.rotation.y += 0.0004;
+      knot.rotation.x += 0.001;
+      knot.rotation.y += 0.0015;
+      camera.position.x += (mouseX - camera.position.x) * 0.03;
+      camera.position.y += (-mouseY - camera.position.y) * 0.03;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    loop();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  })();
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -27,7 +243,8 @@
     try {
       if (!id) {
         const { interviews } = await api('/interview/mine');
-        renderReportList(interviews.filter((interview) => interview.status === 'completed'));
+        const completed = (interviews || []).filter((i) => i.status === 'completed');
+        renderReportList(completed);
         return;
       }
 
@@ -37,33 +254,57 @@
       }
       render(interview);
     } catch (error) {
-      document.getElementById('report-root').innerHTML = `<div class="empty-state">${error.message}</div>`;
+      document.getElementById('report-root').innerHTML = `
+        <div class="sylva-glass-card" style="text-align:center; padding:60px 24px;">
+          <span class="sylva-tag">Scorecard Notice</span>
+          <h2 style="font-size:2rem; font-weight:300; color:#fff; margin-top:10px;">Session Report</h2>
+          <p style="color:var(--ink-soft); margin-top:8px; max-width:500px; margin-left:auto; margin-right:auto;">${error.message}</p>
+          <div style="margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a href="/interview" class="sylva-btn sylva-btn-primary">Launch Rehearsal Room &rarr;</a>
+            <a href="/dashboard" class="sylva-btn sylva-btn-secondary">Return to Dashboard</a>
+          </div>
+        </div>
+      `;
     }
   }
 
   function renderReportList(interviews) {
     const root = document.getElementById('report-root');
     if (!interviews.length) {
-      root.innerHTML = '<div class="empty-state">No completed reports yet. Finish a mock interview to see your results here.</div>';
+      root.innerHTML = `
+        <div class="sylva-glass-card" style="text-align:center; padding:70px 28px;">
+          <span class="sylva-tag">Session History</span>
+          <h1 style="font-size:clamp(2rem, 3.5vw, 2.8rem); font-weight:300; color:#fff; margin:10px 0;">No Completed Sessions Yet</h1>
+          <p style="color:var(--ink-soft); margin:10px auto 28px auto; max-width:540px; font-size:1.05rem; line-height:1.6;">
+            Step into the live AI rehearsal room to practice with real-time speech telemetry, facial composure signals, and instant STAR coaching.
+          </p>
+          <a href="/interview" class="sylva-btn sylva-btn-primary" style="padding:16px 36px; font-size:1rem;">
+            Launch First Practice Session &rarr;
+          </a>
+        </div>
+      `;
       return;
     }
 
     root.innerHTML = `
-      <div class="report-hero">
-        <div>
-          <span class="eyebrow">Performance history</span>
-          <h1 style="margin-top:6px;">Your reports</h1>
-          <p>Review completed interview scorecards and answer feedback.</p>
-        </div>
-      </div>
-      <div class="grid-2">
-        ${interviews.map((interview) => `
-          <div class="card">
-            <span class="eyebrow">${interview.role} track</span>
-            <h3 style="margin-top:8px;">${formatDate(interview.completedAt)}</h3>
-            <p>${interview.questions.length} questions · Overall score: ${Math.round(interview.report?.finalScore || 0)}</p>
-            <a href="/report.html?id=${interview.id}" class="btn btn-secondary">Open report</a>
-          </div>
+      <header style="margin-bottom:32px;">
+        <span class="sylva-tag">Performance Archive</span>
+        <h1 style="font-size:clamp(2.2rem, 3.8vw, 3.2rem); font-weight:300; color:#fff; margin:6px 0 10px 0; letter-spacing:-0.02em;">
+          Your Interview Scorecards
+        </h1>
+        <p style="color:var(--ink-soft); font-size:1.05rem;">Review completed mock evaluations, answer transcripts, and speech clarity metrics.</p>
+      </header>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:22px;">
+        ${interviews.map(iv => `
+          <article class="sylva-glass-card">
+            <span class="sylva-tag">${iv.role} Track</span>
+            <h3 style="font-size:1.4rem; font-weight:400; color:#fff; margin:6px 0 12px 0;">${formatDate(iv.completedAt)}</h3>
+            <p style="color:var(--ink-soft); font-size:0.95rem; line-height:1.5;">
+              ${iv.questions.length} questions &middot; Overall Score: <strong style="color:var(--sylva-green); font-size:1.1rem;">${Math.round(iv.report?.finalScore || 0)}%</strong>
+            </p>
+            <a href="/report?id=${iv.id}" class="sylva-btn sylva-btn-secondary" style="margin-top:20px; width:100%; justify-content:center;">Open Scorecard &rarr;</a>
+          </article>
         `).join('')}
       </div>
     `;
@@ -73,111 +314,86 @@
     const r = iv.report;
     const root = document.getElementById('report-root');
     root.innerHTML = `
-      <div class="report-hero">
+      <header style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:18px; margin-bottom:32px;">
         <div>
-          <span class="eyebrow">Interview Report</span>
-          <h1 style="margin-top:6px;">${iv.role} Track</h1>
-          <p>${formatDate(iv.completedAt)} · ${iv.questions.length} questions · ${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min' : ''}</p>
+          <span class="sylva-tag">${iv.role} Engineering Track</span>
+          <h1 style="font-size:clamp(2.4rem, 4vw, 3.4rem); font-weight:300; color:#fff; margin:6px 0 8px 0; letter-spacing:-0.02em;">
+            Performance Scorecard
+          </h1>
+          <p style="color:var(--ink-soft);">${formatDate(iv.completedAt)} &middot; ${iv.questions.length} questions practiced</p>
         </div>
-        <div class="report-chip-row">
-          <span class="report-chip">${iv.questions.length} questions</span>
-          <span class="report-chip">${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min' : 'Live session'}</span>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="sylva-chip-pill">${iv.questions.length} Questions Evaluated</span>
+          <span class="sylva-chip-pill">${iv.totalDurationSec ? Math.round(iv.totalDurationSec / 60) + ' min session' : 'Live Rehearsal'}</span>
         </div>
-      </div>
+      </header>
 
-      <div class="card report-overview" style="margin-bottom:24px;">
-        <div class="report-overview-inner">
-          <div class="report-ring-card">
+      <!-- Overall Score Overview Panel -->
+      <section class="sylva-glass-card">
+        <span class="sylva-tag">Composite Evaluation</span>
+        <div class="sylva-score-overview-grid" style="margin-top:20px;">
+          <div style="text-align:center;">
             ${ringSVG(r.finalScore, 140, 12, 'OVERALL')}
           </div>
-          <div class="report-score-grid">
-            ${scoreRow('Technical / content', r.technicalScore)}
-            ${scoreRow('Speech clarity', r.speechScore)}
-            ${scoreRow('Facial confidence', r.confidenceScore)}
-            ${scoreRow('Engagement', r.engagementScore)}
+          <div>
+            ${scoreRowItem('Technical Content Depth', r.technicalScore, '#38bdf8')}
+            ${scoreRowItem('Speech Clarity & Cadence', r.speechScore, '#34d399')}
+            ${scoreRowItem('Facial Composure Signal', r.confidenceScore, '#a78bfa')}
+            ${scoreRowItem('Engagement & Delivery', r.engagementScore, '#fbbf24')}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="grid-2" style="margin-bottom:24px;">
-        <div class="card report-list-card">
-          <div class="report-card-title">Strengths</div>
-          <ul class="report-list">
-            ${r.strengths.map((s) => `<li>${s}</li>`).join('') || '<li>—</li>'}
-          </ul>
-        </div>
-        <div class="card report-list-card">
-          <div class="report-card-title">Areas to improve</div>
-          <ul class="report-list">
-            ${r.improvements.map((s) => `<li>${s}</li>`).join('') || '<li>—</li>'}
-          </ul>
-        </div>
-      </div>
+      <!-- Question Analysis Breakdown -->
+      <section class="sylva-glass-card">
+        <span class="sylva-tag">Question Analysis</span>
+        <h2 style="font-size:1.6rem; font-weight:400; color:#fff; margin:6px 0 16px 0;">Detailed STAR Response Breakdown</h2>
 
-      <div class="card report-breakdown-card">
-        <div class="report-card-title">Question-by-question breakdown</div>
-        ${iv.answers.map((a, idx) => {
-          const answerGuide = buildAnswerGuide(a.questionText);
-          return `
-            <div class="report-answer-card">
-              <div class="report-answer-header">
-                <div class="report-answer-q">Q${idx + 1}. ${a.questionText}</div>
-                <span class="badge" style="color:${scoreColor(a.technicalScore)}">${a.technicalScore} content · ${a.clarityScore} clarity</span>
-              </div>
-
-              <div class="report-answer-grid">
-                <div class="report-answer-panel">
-                  <div class="report-panel-label">Your answer</div>
-                  <p class="report-answer-text">${a.transcript ? a.transcript : '<em>No answer recorded.</em>'}</p>
-                  <div class="report-meta">${a.wpm ? a.wpm + ' wpm' : ''} ${a.fillerCount ? '· ' + a.fillerCount + ' filler words' : ''}</div>
-                </div>
-
-                <div class="report-answer-panel report-answer-panel-accent">
-                  <div class="report-panel-label">How to answer this question</div>
-                  <div class="report-panel-subtitle">Perfect answer idea</div>
-                  <p class="report-answer-text">${answerGuide.ideal}</p>
-                  <div class="report-panel-subtitle">Suggestions</div>
-                  <ul class="report-panel-list">
-                    ${answerGuide.tips.map((tip) => `<li>${tip}</li>`).join('')}
-                  </ul>
-                  <div class="report-motivation">${answerGuide.motivation}</div>
-                </div>
-              </div>
+        ${(r.questionEvaluations || []).map((q, idx) => `
+          <article class="sylva-q-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span class="sylva-tag" style="margin:0;">Question ${idx + 1}</span>
+              <span style="font-size:0.9rem; font-weight:600; color:var(--sylva-green);">Score: ${Math.round(q.score || 0)}%</span>
             </div>
-          `;
-        }).join('')}
-      </div>
+            <h3 style="font-size:1.25rem; font-weight:400; color:#fff; margin:10px 0 14px 0; line-height:1.4;">${q.questionText}</h3>
+            
+            <div style="margin-top:14px; padding:16px; background:rgba(0,0,0,0.3); border-radius:14px;">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:rgba(255,255,255,0.5); letter-spacing:0.06em;">Candidate Spoken Response</span>
+              <p style="font-size:0.92rem; color:rgba(255,255,255,0.9); line-height:1.6; margin-top:6px;">
+                ${q.transcript || 'No voice transcript recorded for this question.'}
+              </p>
+            </div>
 
-      <div style="text-align:center; margin-top:32px;">
-        <a href="/resume.html" class="btn btn-primary">Practice another interview</a>
-      </div>
+            <div style="margin-top:12px; padding:16px; background:rgba(52, 211, 153, 0.06); border:1px solid rgba(52, 211, 153, 0.18); border-radius:14px;">
+              <span style="font-size:0.75rem; text-transform:uppercase; color:var(--sylva-green); font-weight:600; letter-spacing:0.06em;">Actionable Coaching Hint</span>
+              <p style="font-size:0.9rem; color:rgba(255,255,255,0.85); line-height:1.5; margin-top:4px;">
+                ${q.feedback || 'Maintain clear Situation, Task, Action, and Result progression with measurable outcomes.'}
+              </p>
+            </div>
+          </article>
+        `).join('')}
+
+        <div style="margin-top:32px; text-align:center; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="/interview" class="sylva-btn sylva-btn-primary">Rehearse Another Session &rarr;</a>
+          <a href="/dashboard" class="sylva-btn sylva-btn-secondary">Return to Dashboard</a>
+        </div>
+      </section>
     `;
   }
 
-  function scoreRow(label, value) {
+  function scoreRowItem(label, score, color) {
+    const val = Math.round(score || 0);
     return `
-      <div class="report-tile">
-        <div class="stat-label">${label}</div>
-        <div class="stat report-stat" style="font-size:1.5rem; color:${scoreColor(value)}">${value}</div>
+      <div class="sylva-score-row">
+        <span style="font-size:0.98rem; color:rgba(255,255,255,0.85);">${label}</span>
+        <strong style="font-size:1.2rem; color:${color}; font-weight:600;">${val}%</strong>
       </div>
     `;
   }
 
-  function buildAnswerGuide(questionText) {
-    const prompt = (questionText || '').trim();
-    const ideal = prompt
-      ? `A strong response to “${prompt}” should begin with a clear point, explain the action you took, and finish with the result or impact. Keep it practical, structured, and specific to the situation.`
-      : 'Start with a clear opening, explain your approach in a few focused points, and end with the outcome you achieved.';
-
-    const tips = [
-      'Open with a short answer that directly addresses the question.',
-      'Mention one concrete example or real experience to support your point.',
-      'End with the outcome, lesson learned, or value you created.',
-    ];
-
-    const motivation = 'You already have the insight — shaping it into a clear, confident answer is what turns a good response into a standout one.';
-
-    return { ideal, tips, motivation };
+  function formatDate(iso) {
+    if (!iso) return 'Recent';
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   load();
