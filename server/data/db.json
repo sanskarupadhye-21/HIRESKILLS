@@ -1,0 +1,614 @@
+{
+  "users": [
+    {
+      "id": "8a378e8d-5017-4a00-b7bd-3a1d66de5bb3",
+      "name": "Shreyas Patil",
+      "email": "shreyassp0604@gmail.com",
+      "passwordHash": "$2a$10$YqS4ZXhDsE9yiHtFxCaNrePoC2mejCohc7XbLuWS5MO1mx3edK42m",
+      "createdAt": "2026-10-24T05:47:46.407Z"
+    },
+    {
+      "id": "23a236d5-62d4-4394-917b-bfdd61990da7",
+      "name": "Test Student",
+      "email": "test_1792830129226@test.com",
+      "passwordHash": "$2a$10$vrdSWQlCq9TgGxxlfi8nJOU1t9qPc43H2QUbn3xRh4Hf/pa7ushhy",
+      "createdAt": "2026-10-24T08:22:09.316Z"
+    },
+    {
+      "id": "68cd6385-9865-4eac-92f5-13de99790e8d",
+      "name": "E2E Tester",
+      "email": "test_1792831408743@test.com",
+      "passwordHash": "$2a$10$wOM7F4Qrxl9YicwiB7t1MOjSbOBcTZCuWS2NLz8VIFGB1XVj2WZby",
+      "createdAt": "2026-10-24T08:43:28.813Z"
+    },
+    {
+      "id": "20874a23-e7c8-4594-9345-fef5ef817615",
+      "name": "Tester",
+      "email": "test_1792832445780@test.com",
+      "passwordHash": "$2a$10$T4etRHTqqosdwVsbIdIdsupulnh2HX0fNhy7UsJAQXgGJ0Yw6NKya",
+      "createdAt": "2026-10-24T09:00:45.892Z"
+    },
+    {
+      "id": "7a0271d0-eb51-41c4-bf3b-817c8e171b8b",
+      "name": "Tester",
+      "email": "test_1792832541161@test.com",
+      "passwordHash": "$2a$10$70vQ0sc.y.rD/8SVH1CdvuN8XhkjhcniWfZPe1EMGgkww09q2A3KS",
+      "createdAt": "2026-10-24T09:02:21.266Z"
+    },
+    {
+      "id": "97c22c1d-fdcd-4e80-a54e-9bdd2e66ca4e",
+      "name": "Tester",
+      "email": "test_1792832577361@test.com",
+      "passwordHash": "$2a$10$T8cdCayTevb0yeIVpa.Ktu2iFHPxbUNhsEciKBenruFLJN8MYGuwy",
+      "createdAt": "2026-10-24T09:02:57.446Z"
+    }
+  ],
+  "resumes": [
+    {
+      "id": "d09a728c-1ef5-484a-8a37-60987f8f368b",
+      "userId": "7a0271d0-eb51-41c4-bf3b-817c8e171b8b",
+      "fileName": "resume demo (1).jpg",
+      "rawText": "Resume: resume demo 1\nResume for John Doe\nSoftware Engineer\nSkills JavaScript Node.js Python React\nExperience years building web apps\nEmail john@example.com\nPhone 1234567890",
+      "name": "Software Engineer",
+      "email": "john@example.com",
+      "phone": "1234567890",
+      "skills": {
+        "Web Development": [
+          "javascript",
+          "react",
+          "node.js"
+        ],
+        "Python & Data": [
+          "python"
+        ]
+      },
+      "totalSkillsMatched": 4,
+      "suggestedRole": "Web Development",
+      "createdAt": "2026-10-24T09:02:21.286Z"
+    },
+    {
+      "id": "ea9dd9bb-8c67-4317-afaa-59a9a3360a9e",
+      "userId": "97c22c1d-fdcd-4e80-a54e-9bdd2e66ca4e",
+      "fileName": "resume_sample.txt",
+      "rawText": "Alex Smith\nFull Stack Developer\nSkills: React, JavaScript, Node.js, Python, SQL\nEmail: alex@sample.com\nPhone: 9876543210",
+      "name": "Alex Smith",
+      "email": "alex@sample.com",
+      "phone": "9876543210",
+      "skills": {
+        "Web Development": [
+          "javascript",
+          "react",
+          "node.js"
+        ],
+        "Python & Data": [
+          "python"
+        ],
+        "Databases": [
+          "sql"
+        ]
+      },
+      "totalSkillsMatched": 5,
+      "suggestedRole": "Web Development",
+      "createdAt": "2026-10-24T09:02:57.455Z"
+    },
+    {
+      "id": "e3f4ec71-b472-405a-8e47-53df0920cd93",
+      "userId": "97c22c1d-fdcd-4e80-a54e-9bdd2e66ca4e",
+      "fileName": "resume demo (1).jpg",
+      "rawText": "Resume: resume demo 1\nJane Doe\nAI Engineer\nSkills Python TensorFlow PyTorch\nEmail jane@sample.com\nPhone 1122334455",
+      "name": "Jane Doe",
+      "email": "jane@sample.com",
+      "phone": "1122334455",
+      "skills": {
+        "Python & Data": [
+          "python"
+        ],
+        "AI / Machine Learning": [
+          "tensorflow",
+          "pytorch"
+        ]
+      },
+      "totalSkillsMatched": 3,
+      "suggestedRole": "AI / Machine Learning",
+      "createdAt": "2026-10-24T09:02:57.461Z"
+    },
+    {
+      "id": "8fbd2386-5f79-48c4-abf1-9474cb1e6259",
+      "userId": "97c22c1d-fdcd-4e80-a54e-9bdd2e66ca4e",
+      "fileName": "portfolio_resume.png",
+      "rawText": "Resume: portfolio resume\nSam Wilson\nDevOps Engineer\nSkills Docker Kubernetes AWS CI/CD\nEmail sam@sample.com",
+      "name": "Sam Wilson",
+      "email": "sam@sample.com",
+      "phone": null,
+      "skills": {
+        "Cloud & DevOps": [
+          "aws",
+          "docker",
+          "kubernetes",
+          "ci/cd"
+        ]
+      },
+      "totalSkillsMatched": 4,
+      "suggestedRole": "Cloud & DevOps",
+      "createdAt": "2026-10-24T09:02:57.465Z"
+    },
+    {
+      "id": "adba1c2c-f0fd-4d33-b009-ae5eefe21504",
+      "userId": "guest",
+      "fileName": "resume demo (1).jpg",
+      "rawText": "Resume: resume demo 1\nJFIF 1++1 HWNNWmhm 1++1 HWNNWmhm fXw Qtz yoU a/S w_7 +uxt Sz- SzO sy@ oZ6 OMS ioc QbY w3X MZ+ KNXe snR uyY 2c0 bXQ +3T 610 Lww /WK loUf PA9 Sck W+o 1gY slr- T-C wWc n58 04N 3@N CZ3 K_G Ye3 0Mhv +0. maH kGm #03@PT6Q 45ARSbBCV dY3 gkg gkg gkg gkf Psw Jgy ujY mzw-IEj GN7 O#B c7Cg gZ3x A2c bsw UiX 7.F fekr .KX Bu_ bc1 eu2i ZUM Df4 3BZ EnnP C#R +pU i_-_n 5jX e4+g lVQI+ M4T pb1 NA1 -Ym 2Q1 bGWx 4NJ Yf. 6+_Y Pai eIX mvN jfH/Y d2- uTV mj7 dYz IDG4j _o2Y 1nCT fEN uAFv c1W2n5 J75j F@0 JhA -t1 Yc. W0N QGU oUl HLs -i5 o2YJl hR9 PIV gZ+p en. eQm K+n 3333 is6 MtR5 SVf9F 3ZJfl 9-u Kxy cjE cyY mX+40t @mW R/b d.#V vfO 5eJ hoX g0Yd B#_ _ah+T R/- jHbb7 U3_ Lxc 4rUI O5ULj EZ3 9PTr bLFJ Ji5 /_X lDpe pZX Y38 Y6Z j_2 l-r 0@zV Agb IPd 9bR 7._cX K7y K/F9 0VU Iyl fka mY7 J#aa 8za Xem 01Y oWA k7H wYJ 5yMt UsV bCA p03 Ck8 -PL dQr wF-7 _5c Cam r4B eXC LeT wel5 2mR QKSVZ S8o43 2g3 Yv3 +bD jq9X rGX fbk 4ey H+E k09 NTY ogR 0ZW1 1lZ TGO J1t LNN LuJpP HE3 2Xk O9ar 1V4V @vh @lx HFa/ #Q. G2@3 DOV9g7 w8nc Eeu 4NFZ -ViV @Q61 l2Zp sj0 gHi 2D1k QaD hd/ /OOq @I_ j_s ly/ wNX /Uh vrb ly/ lu- b87 TdK GJyYA ZMb ly/ fgI S9X DJ- fa8 2V/ 6yS O9g ly/ kfF o9zp AHf 3tu bLa dID II8 ly/ 0yB o27 @pA 8qY 1J5UT fV0 s6U 4aX @J8 x6T X-A W31 N@EM #aG Pbv giM H_/3F As2 dXu -D/ KZM cs9hA Ppxk K5O @0h k8X ly/ ToC O+6-1 6u_1 .TPY ly/ QdI 0a-fLU1 JEd QIL H.n esw EkR K7n IRD ly/ dqyQ PDm9b J971 Ump TVG FeD j0Qq n#D ly/ /WV j/- ly/ mer rry 66g YdU UvUVY 8bY hpv pRM1 o4. j3wa nVD EtW OeGvV 6XCaJ RHJk 3AR lrPNS lZF D7r P9A fkf eI2# 8hL mc#d ly/ u8Z 4kx 4kx 8FW YKj k/hk 2t2oq MSP3 gxu F2T _NzV CnUR 5+9x s@A 2sm Ll. oizm 2yz 29j Km3 mi1 dm1/ V0@ fdlb vyAF lng S0#+ UgJ dA@ Mi@ .Vxs to9a #xG H2+ WWV 9N5 nZN 1jg VrU YIqE W-Q dd_ O.A W2p kmm ly/ Hbb SN2 g.4b Wqx c9U5 x/C 5jp ebk r-Z ly/ @j0 /2HX Bq+pQO 6UW uaoz 381 QxL ZqM 49_P NM7 b-U C@A bmH vtmX r/VMu cZAh 5MD 37_ c2k .HX 6IQ 7@S wrdp eXj 2VXX8 BVA.t l.E AQq #0@Pr BRbst _eT uya BC4m PlI WJdA xtK @@f 6mN FKJ kRIP R0b skA 5co hnI EyW @N+S EGH E9l ph/ jOi Vxk k#W 02# yD9 uRlg 7@X qvn 2ev F5i i/p QBC QRA E#e #pEXW GnV hd#P wSG TqW yoM msx xZKW QJA ROoy4 w7x 48@m HX2+ .6h N4p G7K @4X pVY ZIF Yod hT7 +l0 1GvwV PNXjH I7z Xf- #Lc Pr# A2k i5Q TY7 4PV TD1 bIn Eb@ OPm pbk H#r JmrX zNY PTb O3f e.Ud wM- 9Rdx Sp8 4b-L 0o8 #Ik 3tj ox5 bDU bgZ YpF oFX e0iD V9c wDX QId Q#H ThT yI8 sp. eK1Pv 3VUiF Wms5 BcJ xkV E9r TIn Xlh4 A#E iO90 pta9 okJK EpA W8b .ZnI TsI UUH+ nxQ jP4 by0 AmZ. qwS 3XB pHl RA- D.- jC.U CWq B#_ 1FlT7 kD0 rjP r30 udBb rKK 5gT gw0G N.I 71e tom Ng- UcJco he+ SbUq FA0 NF4 kAKt 0iX1 As_ R6R zCm ju8 gf8 oJF iUT LF1 r0J q1V wlf@ OuC K0TPC lZ9g M3ks @8Uf VEBw GFe fy2 VRW ivC Y#dJ 3J@p a15q lGP hq# femf PHb e#Jt xFv c2g lMp jiG l+h WRB @TR rBd -dH iN8I sGP Ljj cQV sWkr f.v cPt8 s0LD mW@ -sC TLt _Y+ _ga4- B0bG B8C h0n hgq dnG NrG QFD mQa JIS UjB3 5m0 @2F Qv6 YK@ere SvX A9H eUPC 3B@ YB+ UmT 90Q hrk 3Vg vrTp uT6 Wp64_ uJb pLA e@3 8bO 4L15n xue -34 SRl UVI f.@ AH_l oLtk Mcl eBD BhR AEHr O0z YUCM0 jhi G0z 4Hi 0Ia mMpH nGD T/Q@I 0cn eJE MsH JQh wjf 0rE -LP E0r1 45mT a1H eLL A14X KWE 9P@d v2Lx .GH JIQ 2DU xnU sOk oOim cQWT OH6 W0z E33 2fiD fUA kH. .9j YcF BZf H7Ny osTC 5pC K21 k_mk k_mk VQ7B uQh 47+ VKVS WSW 6eks -jXb n1e0 kEPrY 5i-# +Mus9 V.fl O3wg 81GvwRk D/+ fEr O9IPT K-vq nD.N osA Lk5 INP s9MYf LI@ tQVos sMta@j hiT eUr L@R OO- 044 4bqr dQk X@8 02a 3q#B 1@T# Por PhR 7Sq 449 G79 mC@ yanYi DJx LFd j5A YLI9 ttM jSZ l#P mQ. SyW WyW WyW WyW WaV WaV+l aNc SW9 E5a S/8 WyW PuO q5X 3Vx XVhL 3Vx 12@AR qBP#3Cb APt ec+ xwS8 a2I 12T DC@ 4Yl hY4 hY4 hY4 isF Vc5Y f3U PsN @6F VM. VM. E#E#E#Em FuS YYYZQ _JT +++m WRtRU E@P4P4P4P R.V QwT",
+      "name": "Candidate",
+      "email": null,
+      "phone": null,
+      "skills": {
+        "Programming Fundamentals": [
+          "c",
+          "c#"
+        ]
+      },
+      "totalSkillsMatched": 2,
+      "suggestedRole": "Programming Fundamentals",
+      "createdAt": "2026-10-24T09:03:41.405Z"
+    }
+  ],
+  "interviews": [
+    {
+      "id": "18e078af-0773-45ef-982f-0b6493020672",
+      "userId": "23a236d5-62d4-4394-917b-bfdd61990da7",
+      "resumeId": null,
+      "role": "Web Development",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the difference between a list and a tuple in Python?",
+          "keywords": [
+            "mutable",
+            "immutable",
+            "ordered",
+            "list",
+            "tuple",
+            "performance"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "What is the event loop in Node.js?",
+          "keywords": [
+            "asynchronous",
+            "callback",
+            "queue",
+            "non-blocking",
+            "single-threaded",
+            "event"
+          ]
+        },
+        {
+          "id": "q3",
+          "text": "What is the difference between native and cross-platform app development?",
+          "keywords": [
+            "native",
+            "cross-platform",
+            "performance",
+            "flutter",
+            "react native",
+            "code reuse"
+          ]
+        }
+      ],
+      "status": "completed",
+      "createdAt": "2026-10-24T08:22:09.398Z",
+      "answers": [
+        {
+          "questionId": "q1",
+          "questionText": "What is the difference between a list and a tuple in Python?",
+          "transcript": "I built a scalable React and Node microservice application using agile situation task action result.",
+          "technicalScore": 11,
+          "clarityScore": 41,
+          "wpm": 20,
+          "fillerCount": 0
+        },
+        {
+          "questionId": "q2",
+          "questionText": "What is the event loop in Node.js?",
+          "transcript": "When debugging a production incident, I inspect cloud logs and set breakpoints.",
+          "technicalScore": 10,
+          "clarityScore": 40,
+          "wpm": 18,
+          "fillerCount": 0
+        },
+        {
+          "questionId": "q3",
+          "questionText": "What is the difference between native and cross-platform app development?",
+          "transcript": "I prioritize tasks using impact matrices and communicate proactively.",
+          "technicalScore": 10,
+          "clarityScore": 40,
+          "wpm": 15,
+          "fillerCount": 0
+        }
+      ],
+      "emotionSummary": {
+        "confidenceScore": 80,
+        "engagementScore": 100,
+        "dominantEmotion": "happy"
+      },
+      "report": {
+        "technicalScore": 10,
+        "speechScore": 40,
+        "confidenceScore": 80,
+        "engagementScore": 100,
+        "finalScore": 44,
+        "strengths": [
+          "Confident, composed on-camera presence",
+          "Consistent eye contact and camera engagement"
+        ],
+        "improvements": [
+          "Deepen technical answers with more specific examples and terminology",
+          "Reduce filler words and aim for a steadier speaking pace"
+        ]
+      },
+      "totalDurationSec": 120,
+      "completedAt": "2026-10-24T08:22:09.407Z"
+    },
+    {
+      "id": "68cd6830-06b7-4b5a-92ca-cff3184b5d6c",
+      "userId": "guest",
+      "resumeId": null,
+      "role": "General",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is overfitting and how do you prevent it?",
+          "keywords": [
+            "overfitting",
+            "regularization",
+            "dropout",
+            "validation",
+            "generalize",
+            "training data"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "When would you choose MongoDB over MySQL for a project?",
+          "keywords": [
+            "schema",
+            "flexible",
+            "document",
+            "scalability",
+            "relational",
+            "unstructured"
+          ]
+        }
+      ],
+      "status": "in_progress",
+      "createdAt": "2026-10-24T08:22:09.401Z"
+    },
+    {
+      "id": "de69e798-d5fb-4ba1-a23a-d5c27f5fd1fd",
+      "userId": "68cd6385-9865-4eac-92f5-13de99790e8d",
+      "resumeId": null,
+      "role": "General",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the difference between REST and GraphQL APIs?",
+          "keywords": [
+            "endpoint",
+            "query",
+            "over-fetching",
+            "under-fetching",
+            "resource",
+            "schema",
+            "http"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "When would you choose MongoDB over MySQL for a project?",
+          "keywords": [
+            "schema",
+            "flexible",
+            "document",
+            "scalability",
+            "relational",
+            "unstructured"
+          ]
+        },
+        {
+          "id": "q3",
+          "text": "How would you evaluate the performance of a facial emotion recognition model?",
+          "keywords": [
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "confusion matrix",
+            "validation"
+          ]
+        },
+        {
+          "id": "q4",
+          "text": "Why do you want to work in this role / domain?",
+          "keywords": [
+            "passion",
+            "interest",
+            "skill",
+            "career",
+            "goal",
+            "learn",
+            "growth"
+          ]
+        },
+        {
+          "id": "q5",
+          "text": "Tell me about yourself and your academic background.",
+          "keywords": [
+            "experience",
+            "project",
+            "skill",
+            "college",
+            "degree",
+            "background",
+            "interest"
+          ]
+        }
+      ],
+      "status": "completed",
+      "createdAt": "2026-10-24T08:43:28.888Z",
+      "answers": [
+        {
+          "questionId": "q1",
+          "questionText": "What is the difference between REST and GraphQL APIs?",
+          "transcript": "I utilized React hooks and Node.js microservices to optimize data throughput by forty percent.",
+          "technicalScore": 11,
+          "clarityScore": 40,
+          "wpm": 24,
+          "fillerCount": 0
+        },
+        {
+          "questionId": "q2",
+          "questionText": "When would you choose MongoDB over MySQL for a project?",
+          "transcript": "Database indexing with composite keys resolved queries in under 5ms.",
+          "technicalScore": 10,
+          "clarityScore": 40,
+          "wpm": 15,
+          "fillerCount": 0
+        }
+      ],
+      "emotionSummary": {
+        "confidenceScore": 80,
+        "engagementScore": 100,
+        "dominantEmotion": "happy"
+      },
+      "report": {
+        "technicalScore": 11,
+        "speechScore": 40,
+        "confidenceScore": 80,
+        "engagementScore": 100,
+        "finalScore": 44,
+        "strengths": [
+          "Confident, composed on-camera presence",
+          "Consistent eye contact and camera engagement"
+        ],
+        "improvements": [
+          "Deepen technical answers with more specific examples and terminology",
+          "Reduce filler words and aim for a steadier speaking pace"
+        ]
+      },
+      "totalDurationSec": 150,
+      "completedAt": "2026-10-24T08:43:28.894Z"
+    },
+    {
+      "id": "d83b127b-6c93-47dd-8600-57901597e723",
+      "userId": "guest",
+      "resumeId": null,
+      "role": "General",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the difference between native and cross-platform app development?",
+          "keywords": [
+            "native",
+            "cross-platform",
+            "performance",
+            "flutter",
+            "react native",
+            "code reuse"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "How do you handle disagreements while working in a team?",
+          "keywords": [
+            "listen",
+            "communicate",
+            "compromise",
+            "respect",
+            "discuss",
+            "collaborate"
+          ]
+        },
+        {
+          "id": "q3",
+          "text": "Where do you see yourself in the next few years?",
+          "keywords": [
+            "goal",
+            "growth",
+            "career",
+            "learn",
+            "skills",
+            "role",
+            "company"
+          ]
+        },
+        {
+          "id": "q4",
+          "text": "What is your biggest strength and how does it help you professionally?",
+          "keywords": [
+            "strength",
+            "skill",
+            "team",
+            "problem",
+            "communication",
+            "leadership"
+          ]
+        },
+        {
+          "id": "q5",
+          "text": "Explain the concept of dependency injection in Spring.",
+          "keywords": [
+            "inversion of control",
+            "bean",
+            "container",
+            "dependency",
+            "coupling",
+            "spring"
+          ]
+        }
+      ],
+      "status": "in_progress",
+      "createdAt": "2026-10-24T08:50:53.920Z"
+    },
+    {
+      "id": "134e70ad-97d7-486d-b796-3876cb50e1bf",
+      "userId": "guest",
+      "resumeId": null,
+      "role": "General",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "How does Flask differ from Django?",
+          "keywords": [
+            "micro",
+            "framework",
+            "orm",
+            "lightweight",
+            "batteries",
+            "routing"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "What is the difference between a list and a tuple in Python?",
+          "keywords": [
+            "mutable",
+            "immutable",
+            "ordered",
+            "list",
+            "tuple",
+            "performance"
+          ]
+        },
+        {
+          "id": "q3",
+          "text": "Where do you see yourself in the next few years?",
+          "keywords": [
+            "goal",
+            "growth",
+            "career",
+            "learn",
+            "skills",
+            "role",
+            "company"
+          ]
+        },
+        {
+          "id": "q4",
+          "text": "Explain how the Virtual DOM works in React.",
+          "keywords": [
+            "diff",
+            "reconciliation",
+            "virtual",
+            "dom",
+            "render",
+            "update",
+            "component"
+          ]
+        },
+        {
+          "id": "q5",
+          "text": "How would you evaluate the performance of a facial emotion recognition model?",
+          "keywords": [
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "confusion matrix",
+            "validation"
+          ]
+        }
+      ],
+      "status": "in_progress",
+      "createdAt": "2026-10-24T08:51:47.380Z"
+    },
+    {
+      "id": "53efa4c1-f51a-4886-abc1-c6e27ef2e623",
+      "userId": "guest",
+      "resumeId": "adba1c2c-f0fd-4d33-b009-ae5eefe21504",
+      "role": "Programming Fundamentals",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "What is the difference between an abstract class and an interface in Java?",
+          "keywords": [
+            "abstract",
+            "interface",
+            "multiple inheritance",
+            "implementation",
+            "method"
+          ]
+        },
+        {
+          "id": "q2",
+          "text": "What is the difference between an array and a linked list?",
+          "keywords": [
+            "contiguous",
+            "pointer",
+            "insertion",
+            "deletion",
+            "memory",
+            "index"
+          ]
+        },
+        {
+          "id": "q3",
+          "text": "What is the difference between a list and a tuple in Python?",
+          "keywords": [
+            "mutable",
+            "immutable",
+            "ordered",
+            "list",
+            "tuple",
+            "performance"
+          ]
+        },
+        {
+          "id": "q4",
+          "text": "Explain the time complexity of binary search and when you would use it.",
+          "keywords": [
+            "log n",
+            "sorted",
+            "divide",
+            "complexity",
+            "binary search",
+            "efficient"
+          ]
+        },
+        {
+          "id": "q5",
+          "text": "Explain the difference between supervised and unsupervised learning.",
+          "keywords": [
+            "label",
+            "unlabeled",
+            "classification",
+            "clustering",
+            "training",
+            "output"
+          ]
+        }
+      ],
+      "status": "in_progress",
+      "createdAt": "2026-10-24T09:03:49.549Z"
+    }
+  ]
+}
