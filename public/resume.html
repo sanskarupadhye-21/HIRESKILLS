@@ -2,90 +2,303 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume — HireSkill AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Resume Parser &amp; Skills Track Matcher | HireSkill AI</title>
+<meta name="description" content="Upload your resume for automated technical skills extraction, track matching, and role-tailored interview question generation with HireSkill AI.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hireskill.ai/resume">
+
+<!-- Fonts & Styling -->
+<link rel="preload" href="https://ublctyddhtbgaersvxxb.supabase.co/storage/v1/object/public/threeui-media/scene-images/embedded/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 24'%3E%3Crect width='22' height='24' fill='%234a4d44'/%3E%3Cpath fill='%23fff' d='M11 1.3c-2.1 0-3.95 1.2-4.75 2.95C3.95 4.55 2.3 6.25 2.3 8.35c0 2.3 1.9 4.2 4.3 4.2h8.8c2.4 0 4.3-1.9 4.3-4.2 0-2.1-1.65-3.8-4-4.1C14.95 2.5 13.1 1.3 11 1.3Z'/%3E%3Cpath fill='%23fff' d='M9.6 12.55h2.8v4.2c1.35.3 2.45 1.15 3.15 2.4-1.35.4-2.4.15-3.15-.4v4.15H9.6v-4.15c-.75.55-1.8.8-3.15.4.7-1.25 1.8-2.1 3.15-2.4v-4.2Z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/css/style.css">
+
+<style>
+  :root {
+    --u: calc(100vw / 1600);
+    --ink: #ffffff;
+    --ink-soft: rgba(255,255,255,.68);
+  }
+  body {
+    background: #2b3028;
+    color: var(--ink);
+    font-family: 'Lexend', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  #scene-resume {
+    position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%;
+    pointer-events: none; opacity: 0.85;
+  }
+  .stage-resume {
+    position: relative; z-index: 2;
+    max-width: 920px;
+    margin: 90px auto 60px auto;
+    padding: 0 28px;
+    perspective: 1400px;
+  }
+  .ghost-resume {
+    position: absolute; z-index: 1;
+    top: 50px; right: 20px;
+    font-size: clamp(80px, 15vw, 220px);
+    font-weight: 400; letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.038);
+    white-space: nowrap; user-select: none; pointer-events: none;
+    line-height: 0.8;
+  }
+  .resume-tag {
+    font-size: 0.82rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.18em; color: #34d399; margin-bottom: 8px; display: inline-block;
+  }
+  .resume-title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300; letter-spacing: -0.03em; line-height: 1.2;
+    color: #fff; margin-bottom: 12px;
+  }
+  .resume-sub {
+    font-size: 1.05rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 32px;
+  }
+  .glass-card-3d {
+    background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.015) 55%, rgba(20,24,18,0.5));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 32px;
+    padding: 38px;
+    backdrop-filter: blur(24px) saturate(180%);
+    margin-bottom: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    transform: perspective(1400px) rotateX(calc(var(--py,0) * -1.2deg)) rotateY(calc(var(--px,0) * 1.5deg));
+    transition: transform .12s cubic-bezier(.16,1,.3,1);
+  }
+  .portal-scanner {
+    position: relative;
+    border: 2px dashed rgba(255,255,255,0.22);
+    border-radius: 26px;
+    padding: 52px 28px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(0,0,0,0.22);
+    overflow: hidden;
+    transition: all .25s var(--ease);
+  }
+  .portal-scanner:hover, .portal-scanner.drag-over {
+    border-color: #34d399;
+    background: rgba(52, 211, 153, 0.08);
+    transform: scale(1.01);
+  }
+  .scanner-laser {
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #34d399, #38bdf8, transparent);
+    box-shadow: 0 0 14px #34d399;
+    animation: sweepLaser 3s infinite ease-in-out;
+  }
+  @keyframes sweepLaser {
+    0% { transform: translateY(-5px); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(220px); opacity: 0; }
+  }
+  .btn-liquid {
+    width: 100%; padding: 16px; border-radius: 999px;
+    background: #eef1e7; color: #1e241b;
+    font-weight: 600; font-size: 0.95rem; cursor: pointer;
+    border: none; margin-top: 22px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    transition: background .2s, transform .2s;
+  }
+  .btn-liquid:hover:not(:disabled) { background: #fff; transform: translateY(-2px); }
+  .btn-liquid:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-ghost {
+    width: 100%; padding: 15px; border-radius: 999px;
+    background: rgba(255,255,255,0.08); color: #fff;
+    border: 1px solid rgba(255,255,255,0.16);
+    font-weight: 500; font-size: 0.95rem; cursor: pointer; margin-top: 16px;
+    transition: all .2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.35); }
+
+  .input-sylva {
+    width: 100%; padding: 14px 18px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px; color: #fff;
+    font-family: inherit; font-size: 0.95rem; outline: none;
+    transition: border-color .2s;
+  }
+  .input-sylva:focus { border-color: #34d399; }
+
+  .chip-row {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+  }
+  .chip-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px; padding: 8px 18px;
+    color: rgba(255,255,255,0.82); font-size: 0.86rem; font-family: inherit;
+    cursor: pointer; transition: all .2s;
+  }
+  .chip-item:hover, .chip-item.active {
+    background: #eef1e7; color: #1e241b; border-color: #eef1e7;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .tag-badge {
+    background: rgba(52, 211, 153, 0.15); color: #34d399;
+    padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+  }
+  .skill-pill {
+    display: inline-block; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+    padding: 4px 11px; font-size: 0.82rem; margin: 3px; color: rgba(255,255,255,0.88);
+  }
+  .form-error-toast {
+    color: #ff6b6b; font-size: 0.85rem; margin-top: 12px; text-align: center; display: none;
+  }
+  .form-error-toast.show { display: block; }
+</style>
 </head>
 <body>
+
+<!-- Three.js 3D Background with Neural Torus & Ambient Motes -->
+<canvas id="scene-resume" aria-hidden="true"></canvas>
+
+<!-- Top Proximity Specular Dock -->
 <div id="nav-root"></div>
 
-<section class="page">
-  <div class="container" style="max-width:760px;">
-    <span class="eyebrow">Step 1</span>
-    <h1 style="margin-top:6px;">Upload your resume</h1>
-    <p>We'll extract your skills and match you to the most relevant interview track — technical
-      questions for your strongest domain, plus core behavioral questions every candidate gets.</p>
+<main class="stage-resume">
+  <div class="ghost-resume" aria-hidden="true">PARSER</div>
 
-    <div class="card" style="margin-top:24px;">
-      <div id="drop-zone" style="border:2px dashed var(--border); border-radius:var(--radius-sm); padding:40px; text-align:center; cursor:pointer;">
-        <div style="font-size:2rem; margin-bottom:8px;">📄</div>
-        <div id="drop-text">Drag & drop your resume, or click to browse</div>
-        <div class="muted" style="font-size:0.82rem; margin-top:6px;">PDF, DOCX or TXT — up to 10MB</div>
-        <input type="file" id="file-input" accept=".pdf,.docx,.txt" style="display:none;">
+  <header>
+    <span class="resume-tag">Track Telemetry &amp; Matching</span>
+    <h1 class="resume-title">Upload your resume for AI skills analysis</h1>
+    <p class="resume-sub">We’ll extract your competencies, detect your primary engineering domain, and tailor both technical STAR questions and core behavioral rounds.</p>
+  </header>
+
+  <!-- Upload Holographic Scanner -->
+  <section class="glass-card-3d" aria-labelledby="upload-heading">
+    <h2 id="upload-heading" class="visually-hidden" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Document Upload Area</h2>
+    <div id="drop-zone" class="portal-scanner" role="button" tabindex="0" aria-label="Drop resume file here or click to browse">
+      <div class="scanner-laser" aria-hidden="true"></div>
+      <div style="font-size:3rem; margin-bottom:12px;" aria-hidden="true">📄</div>
+      <div id="drop-text" style="font-weight:600; font-size:1.15rem; color:#fff;">Drag &amp; drop your resume, or click to browse</div>
+      <div style="font-size:0.86rem; color:rgba(255,255,255,0.65); margin-top:8px;">PDF, DOCX, TXT or Images (JPG, PNG) &mdash; up to 15MB</div>
+      <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png,.webp" style="display:none;" aria-label="Resume file upload">
+    </div>
+    <div class="form-error-toast" id="upload-error" role="alert"></div>
+    <button class="btn-liquid" id="upload-btn" disabled>Analyze Resume Telemetry &rarr;</button>
+  </section>
+
+  <!-- Extracted Skills & Session Configuration Card -->
+  <section class="glass-card-3d" id="result-card" style="display:none;" aria-labelledby="result-heading">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h2 id="result-heading" style="font-size:1.5rem; font-weight:400; color:#fff; margin:0;"><span id="result-name">Candidate</span></h2>
+        <span style="font-size:0.85rem; color:rgba(255,255,255,0.5);" id="result-email"></span>
       </div>
-      <div class="form-error" id="upload-error"></div>
-      <button class="btn btn-primary btn-block" id="upload-btn" style="margin-top:20px;" disabled>Analyze resume</button>
+      <span class="tag-badge" id="result-role">Track Detected</span>
     </div>
 
-    <div class="card" id="result-card" style="margin-top:24px; display:none;">
-      <div class="flex-between">
-        <div>
-          <h3 style="margin-bottom:2px;" id="result-name"></h3>
-          <span class="muted" id="result-email"></span>
-        </div>
-        <span class="badge" id="result-role"></span>
-      </div>
-      <div id="result-skills" style="margin-top:18px;"></div>
+    <div id="result-skills" style="margin-top:20px;"></div>
 
-      <div class="question-count-card" style="margin-top:18px;">
-        <label for="question-count" style="display:block; margin-bottom:8px;">Question count</label>
-        <div class="question-count-field">
-          <span class="question-count-icon">#</span>
-          <input id="question-count" class="question-count-input" type="number" min="1" max="10" value="5">
-        </div>
-      </div>
-
-      <button class="btn btn-primary btn-block" id="start-interview-btn" style="margin-top:24px;">
-        Start mock interview →
-      </button>
+    <div style="margin-top:24px; padding:20px; background:rgba(0,0,0,0.25); border-radius:18px;">
+      <label for="question-count" style="display:block; font-size:0.85rem; color:rgba(255,255,255,0.7); margin-bottom:8px;">Rehearsal Question Count</label>
+      <input id="question-count" class="input-sylva" type="number" min="1" max="10" value="5" aria-label="Number of interview questions">
     </div>
 
-    <div class="card" style="margin-top:24px;">
-      <div class="flex-between">
-        <h3 style="margin:0;">Skip resume, choose a track manually</h3>
-      </div>
-      <p style="margin-top:6px;">Prefer to jump straight in? Type your focus area and start practicing.</p>
+    <button class="btn-liquid" id="start-interview-btn">
+      Enter Live Rehearsal Studio &rarr;
+    </button>
+  </section>
 
-      <label for="manual-role" style="display:block; margin-top:14px; margin-bottom:8px;">Topic</label>
-      <input id="manual-role" type="text" placeholder="Type a topic like Java & Backend or Python & Data" value="General">
+  <!-- Manual Track Selection Section -->
+  <section class="glass-card-3d" aria-labelledby="manual-heading">
+    <h2 id="manual-heading" style="font-size:1.35rem; font-weight:400; color:#fff; margin:0;">Skip resume, choose an interview track</h2>
+    <p style="font-size:0.92rem; color:rgba(255,255,255,0.6); margin-top:6px;">Prefer to jump straight into practice? Select your engineering focus below.</p>
 
-      <div id="topic-chip-row" class="topic-chip-row" style="margin-top:14px;">
-        <button type="button" class="topic-chip" data-topic="General">General</button>
-        <button type="button" class="topic-chip" data-topic="Web Development">Web Development</button>
-        <button type="button" class="topic-chip" data-topic="Python & Data">Python & Data</button>
-        <button type="button" class="topic-chip" data-topic="Java & Backend">Java & Backend</button>
-        <button type="button" class="topic-chip" data-topic="AI / Machine Learning">AI / Machine Learning</button>
-        <button type="button" class="topic-chip" data-topic="Databases">Databases</button>
-        <button type="button" class="topic-chip" data-topic="Cloud & DevOps">Cloud & DevOps</button>
-        <button type="button" class="topic-chip" data-topic="Mobile">Mobile</button>
-      </div>
-
-      <div class="question-count-card" style="margin-top:14px;">
-        <label for="manual-question-count" style="display:block; margin-bottom:8px;">Question count</label>
-        <div class="question-count-field">
-          <span class="question-count-icon">#</span>
-          <input id="manual-question-count" class="question-count-input" type="number" min="1" max="10" value="5">
-        </div>
-      </div>
-      <button class="btn btn-secondary btn-block" id="manual-start-btn" style="margin-top:14px;">Start without resume</button>
+    <div style="margin-top:16px;">
+      <label for="manual-role" style="display:block; font-size:0.82rem; color:rgba(255,255,255,0.6); margin-bottom:6px;">Target Engineering Track</label>
+      <input id="manual-role" class="input-sylva" type="text" placeholder="Type a topic like Java &amp; Backend or Python &amp; Data" value="General">
     </div>
-  </div>
-</section>
 
+    <div id="topic-chip-row" class="chip-row" role="group" aria-label="Popular Interview Topics">
+      <button type="button" class="chip-item active" data-topic="General">General</button>
+      <button type="button" class="chip-item" data-topic="Web Development">Web Development</button>
+      <button type="button" class="chip-item" data-topic="Python &amp; Data">Python &amp; Data</button>
+      <button type="button" class="chip-item" data-topic="Java &amp; Backend">Java &amp; Backend</button>
+      <button type="button" class="chip-item" data-topic="AI / Machine Learning">AI / Machine Learning</button>
+      <button type="button" class="chip-item" data-topic="Databases">Databases</button>
+      <button type="button" class="chip-item" data-topic="Cloud &amp; DevOps">Cloud &amp; DevOps</button>
+      <button type="button" class="chip-item" data-topic="Mobile">Mobile</button>
+    </div>
+
+    <div style="margin-top:18px; padding:18px; background:rgba(0,0,0,0.25); border-radius:18px;">
+      <label for="manual-question-count" style="display:block; font-size:0.85rem; color:rgba(255,255,255,0.7); margin-bottom:8px;">Questions to Practice</label>
+      <input id="manual-question-count" class="input-sylva" type="number" min="1" max="10" value="5" aria-label="Manual question count">
+    </div>
+
+    <button class="btn-ghost" id="manual-start-btn">Start Practice Without Resume</button>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="/js/api.js"></script>
+<script src="/js/spatial-3d.js"></script>
 <script>
   requireAuth();
   renderNav('resume');
+
+  // 3D Three.js Ambient Scene with Neural Torus & Drifting Particles
+  (function() {
+    const cv = document.getElementById('scene-resume');
+    if (!window.THREE || !cv) return;
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 3000);
+    camera.position.z = 1000;
+
+    const count = 450;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      pos[i] = (Math.random() - 0.5) * 2600;
+      pos[i+1] = (Math.random() - 0.5) * 1400;
+      pos[i+2] = -400 + Math.random() * 800;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color: 0x98b890, size: 4.5, transparent: true, opacity: 0.52, blending: THREE.AdditiveBlending });
+    const motes = new THREE.Points(geo, mat);
+    scene.add(motes);
+
+    const torusGeo = new THREE.TorusGeometry(320, 16, 16, 100);
+    const torusMat = new THREE.MeshBasicMaterial({ color: 0x829175, wireframe: true, transparent: true, opacity: 0.13 });
+    const meshPlexus = new THREE.Mesh(torusGeo, torusMat);
+    meshPlexus.position.set(-280, 80, -200);
+    meshPlexus.rotation.x = Math.PI / 3.2;
+    scene.add(meshPlexus);
+
+    let px = 0, py = 0;
+    window.addEventListener('pointermove', (e) => {
+      px = (e.clientX / window.innerWidth) * 2 - 1;
+      py = (e.clientY / window.innerHeight) * 2 - 1;
+      document.documentElement.style.setProperty('--px', px.toFixed(3));
+      document.documentElement.style.setProperty('--py', py.toFixed(3));
+    }, { passive: true });
+
+    function loop() {
+      requestAnimationFrame(loop);
+      motes.rotation.y += 0.0003;
+      meshPlexus.rotation.z += 0.0007;
+      renderer.render(scene, camera);
+    }
+    loop();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  })();
 
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
@@ -95,11 +308,14 @@
   let uploadedResume = null;
 
   dropZone.addEventListener('click', () => fileInput.click());
-  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
-  dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border)'; });
+  dropZone.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
   dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
-    dropZone.style.borderColor = 'var(--border)';
+    dropZone.classList.remove('drag-over');
     if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
   });
   fileInput.addEventListener('change', () => {
@@ -108,77 +324,92 @@
 
   function selectFile(file) {
     selectedFile = file;
-    document.getElementById('drop-text').textContent = `Selected: ${file.name}`;
+    document.getElementById('drop-text').textContent = `Selected: ${file.name} (${Math.round(file.size / 1024)} KB)`;
     uploadBtn.disabled = false;
   }
 
   uploadBtn.addEventListener('click', async () => {
     if (!selectedFile) return;
-    errEl.classList.remove('show');
     uploadBtn.disabled = true;
-    uploadBtn.textContent = 'Analyzing...';
+    uploadBtn.textContent = 'Extracting resume telemetry…';
+    errEl.classList.remove('show');
+
+    const form = new FormData();
+    form.append('resume', selectedFile);
+
     try {
-      const formData = new FormData();
-      formData.append('resume', selectedFile);
-      const data = await apiUpload('/resume/upload', formData);
-      uploadedResume = data.resume;
-      showResult(uploadedResume);
+      const data = await apiUpload('/resume/upload', form);
+      const r = data.resume || data;
+      uploadedResume = r;
+      renderResult(r);
     } catch (err) {
       errEl.textContent = err.message;
       errEl.classList.add('show');
     } finally {
       uploadBtn.disabled = false;
-      uploadBtn.textContent = 'Analyze resume';
+      uploadBtn.textContent = 'Analyze Resume Telemetry →';
     }
   });
 
-  function showResult(resume) {
+  function renderResult(r) {
     document.getElementById('result-card').style.display = 'block';
-    document.getElementById('result-name').textContent = resume.name || 'Candidate';
-    document.getElementById('result-email').textContent = resume.email || '';
-    document.getElementById('result-role').textContent = `Suggested track: ${resume.suggestedRole}`;
+    document.getElementById('result-name').textContent = r.name || 'Candidate';
+    document.getElementById('result-email').textContent = r.email || '';
+    document.getElementById('result-role').textContent = `${r.suggestedRole || 'General'} Track`;
 
-    const skillsEl = document.getElementById('result-skills');
-    const categories = Object.entries(resume.skills || {});
-    if (categories.length === 0) {
-      skillsEl.innerHTML = `<p class="muted">No specific technical skills detected — we'll use a general interview track.</p>`;
-    } else {
-      skillsEl.innerHTML = categories.map(([cat, skills]) => `
-        <div style="margin-bottom:10px;">
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">${cat}</div>
-          <div class="flex gap-8" style="flex-wrap:wrap;">
-            ${skills.map((s) => `<span class="badge">${s}</span>`).join('')}
-          </div>
-        </div>
-      `).join('');
-    }
-    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Flatten skills from matchedByCategory
+    const skillsObj = r.skills || {};
+    const skillList = Array.isArray(skillsObj) ? skillsObj : Object.values(skillsObj).flat();
+    document.getElementById('result-skills').innerHTML = skillList.length
+      ? skillList.map(s => `<span class="skill-pill">${s}</span>`).join('')
+      : '<span style="font-size:0.85rem; color:rgba(255,255,255,0.5);">Broad skills mapped.</span>';
+
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth' });
   }
 
   document.getElementById('start-interview-btn').addEventListener('click', async () => {
-    if (!uploadedResume) return;
-    const questionCount = Number(document.getElementById('question-count').value);
-    const { interview } = await api('/interview/start', {
-      method: 'POST',
-      body: { resumeId: uploadedResume.id, questionCount },
-    });
-    window.location.href = `/interview.html?id=${interview.id}`;
+    const btn = document.getElementById('start-interview-btn');
+    btn.disabled = true;
+    btn.textContent = 'Configuring AI Rehearsal Studio…';
+    try {
+      const questionCount = parseInt(document.getElementById('question-count').value, 10) || 5;
+      const data = await api('/interview/start', {
+        method: 'POST',
+        body: { resumeId: uploadedResume?.id, questionCount }
+      });
+      window.location.href = `/interview?id=${data.interview.id}`;
+    } catch (err) {
+      alert(err.message);
+      btn.disabled = false;
+      btn.textContent = 'Enter Live Rehearsal Studio →';
+    }
   });
 
-  document.querySelectorAll('.topic-chip').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      document.getElementById('manual-role').value = chip.dataset.topic;
+  document.querySelectorAll('.chip-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chip-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('manual-role').value = btn.dataset.topic;
     });
   });
 
   document.getElementById('manual-start-btn').addEventListener('click', async () => {
-    const role = (document.getElementById('manual-role').value || '').trim() || 'General';
-    const questionCount = Number(document.getElementById('manual-question-count').value);
-    const { interview } = await api('/interview/start', {
-      method: 'POST',
-      body: { role, questionCount },
-    });
-    window.location.href = `/interview.html?id=${interview.id}`;
+    const btn = document.getElementById('manual-start-btn');
+    btn.disabled = true;
+    btn.textContent = 'Initializing Session…';
+    try {
+      const role = document.getElementById('manual-role').value || 'General';
+      const questionCount = parseInt(document.getElementById('manual-question-count').value, 10) || 5;
+      const data = await api('/interview/start', {
+        method: 'POST',
+        body: { role, questionCount }
+      });
+      window.location.href = `/interview?id=${data.interview.id}`;
+    } catch (err) {
+      alert(err.message);
+      btn.disabled = false;
+      btn.textContent = 'Start Practice Without Resume';
+    }
   });
 </script>
 </body>

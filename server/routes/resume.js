@@ -17,21 +17,42 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, `${uuidv4()}${path.extname(file.originalname)}`),
 });
 
+const allowedExtensions = ['.pdf', '.docx', '.doc', '.txt', '.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff'];
+
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15MB limit
   fileFilter: (req, file, cb) => {
-    const allowed = ['.pdf', '.docx', '.txt'];
-    if (allowed.includes(path.extname(file.originalname).toLowerCase())) cb(null, true);
-    else cb(new Error('Only PDF, DOCX, or TXT resumes are supported.'));
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowedExtensions.includes(ext) || (file.mimetype && (file.mimetype.startsWith('image/') || file.mimetype.includes('pdf') || file.mimetype.includes('text')))) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File format "${ext}" is not supported. Please upload a PDF, DOCX, TXT, or Image (JPG, PNG).`));
+    }
   },
 });
 
-router.post('/upload', authRequired, upload.single('resume'), async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
+// Middleware to catch multer errors gracefully without 500 crash
+function handleUpload(req, res, next) {
+  upload.single('resume')(req, res, (err) => {
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ error: 'File size exceeds 15MB limit.' });
+        }
+        return res.status(400).json({ error: `Upload error: ${err.message}` });
+      }
+      return res.status(400).json({ error: err.message || 'File upload failed.' });
+    }
+    next();
+  });
+}
+
+router.post('/upload', authRequired, handleUpload, async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded. Please choose a resume file.' });
 
   try {
-    const parsed = await parseResume(req.file.path, req.file.mimetype);
+    const parsed = await parseResume(req.file.path, req.file.mimetype, req.file.originalname);
 
     const db = readDb();
     const resumeRecord = {
@@ -46,8 +67,8 @@ router.post('/upload', authRequired, upload.single('resume'), async (req, res) =
 
     res.status(201).json({ resume: resumeRecord });
   } catch (err) {
-    console.error(err);
-    res.status(400).json({ error: err.message || 'It is not a resume. Upload once again.' });
+    console.error('Resume processing error:', err.message);
+    res.status(400).json({ error: err.message || 'Could not parse resume. Please verify the document and try again.' });
   }
 });
 
